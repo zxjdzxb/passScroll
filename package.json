@@ -7,13 +7,16 @@
     "build": "vite build",
     "preview": "vite preview",
     "prepare": "husky install",
-    "cz": "git add . && git-cz",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
   "lint-staged": {
-    "*.js": "eslint --fix"
+    "*.{js,jsx,ts,tsx,vue}": [
+      "npm run lint",
+      "git add ."
+    ]
   },
   "config": {
     "commitizen": {
@@ -26,6 +29,8 @@
     ]
   },
   "dependencies": {
+    "markdown-it": "^13.0.2",
+    "markdown-it-anchor": "^8.6.7",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },
