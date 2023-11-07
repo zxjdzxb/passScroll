@@ -7,15 +7,13 @@
     "build": "vite build",
     "preview": "vite preview",
     "prepare": "husky install",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,vue}": [
-      "npm run lint",
-      "git add ."
+    "*.{.vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts}": [
+      "eslint --fix --ignore-path .gitignore"
     ]
   },
   "config": {
@@ -29,8 +27,6 @@
     ]
   },
   "dependencies": {
-    "markdown-it": "^13.0.2",
-    "markdown-it-anchor": "^8.6.7",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },
@@ -44,6 +40,7 @@
     "commitizen": "^4.3.0",
     "cz-customizable": "^7.0.0",
     "eslint": "^8.45.0",
+    "eslint-plugin-cypress": "^2.15.1",
     "eslint-plugin-vue": "^9.15.1",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",

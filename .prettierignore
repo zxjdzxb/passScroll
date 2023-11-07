@@ -22,3 +22,5 @@ node_modules/
 **/*.sh
 components.d.ts
 auto-imports.d.ts
+/docs/.vitepress/dist
+/docs/.vitepress/cache
