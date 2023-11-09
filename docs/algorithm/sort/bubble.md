@@ -13,7 +13,7 @@
 
 ## （3）动图演示
 
-![image.jpg](./bubble.awebp)
+![image.jpg](../../public/bubble.awebp)
 
 ## （4）代码演示
 

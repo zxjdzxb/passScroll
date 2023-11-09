@@ -16,7 +16,7 @@
 
 ## （3）动态图演示
 
-![4.jpg](./selection.awebp)
+![4.jpg](../../public/selection.awebp)
 
 ## （4）代码演示
 
