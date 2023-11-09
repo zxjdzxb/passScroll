@@ -20,6 +20,13 @@ export default defineConfig({
       provider: 'local'
     },
     sidebar: sidebarConfig,
+    lastUpdated: {
+      text: '最近更新于',
+      formatOptions: {
+        dateStyle: 'full',
+        timeStyle: 'medium'
+      }
+    },
     docFooter: { prev: '上一篇', next: '下一篇' },
     // footer: {
     //     message: 'Released under the MIT License.',
