@@ -26,7 +26,10 @@ const sidebarConfig = [
   {
     text: '数据结构',
     collapsed: true, // 侧边栏是否收起
-    items: [{ text: '树', link: '/algorithm/tree' }]
+    items: [
+      { text: '数组', link: '/algorithm/data-structure/array' },
+      { text: '树', link: '/algorithm/data-structure/tree' }
+    ]
   }
 ]
 
