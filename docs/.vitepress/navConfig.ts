@@ -6,6 +6,14 @@ const navConfig = [
     link: '/vite/markdown-examples'
   },
   {
+    text: '面试宝典',
+    items: [
+      { text: 'HTML+CSS', link: '/interview/html_css' },
+      { text: 'JavaScript', link: '/ interview/javascript' }
+    ]
+  },
+
+  {
     text: '排序算法',
     items: [
       { text: '冒泡排序', link: '/algorithm/sort/bubble' },

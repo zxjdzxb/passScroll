@@ -9,6 +9,13 @@ const sidebarConfig = [
     ]
   },
   {
+    text: '面试宝典',
+    items: [
+      { text: 'HTML+CSS', link: '/interview/html_css' },
+      { text: 'JavaScript', link: '/ interview/javascript' }
+    ]
+  },
+  {
     text: '排序算法',
     collapsed: false, // 侧边栏是否收起
     items: [

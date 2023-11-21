@@ -8,6 +8,15 @@ export default defineConfig({
   title: 'June_Solstice',
   description: '个人学习笔记',
   lastUpdated: true,
+  markdown: {
+    container: {
+      tipLabel: '提示',
+      warningLabel: '警告',
+      dangerLabel: '危险',
+      infoLabel: '信息',
+      detailsLabel: '答案'
+    }
+  },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: '/logo.awebp',
@@ -15,6 +24,7 @@ export default defineConfig({
     darkModeSwitchLabel: '切换主题',
     sidebarMenuLabel: '菜单',
     returnToTopLabel: '回到顶部',
+    // outline: [1, 2],
     nav: navConfig,
     search: {
       provider: 'local'
