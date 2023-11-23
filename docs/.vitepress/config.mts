@@ -24,7 +24,7 @@ export default defineConfig({
     darkModeSwitchLabel: '切换主题',
     sidebarMenuLabel: '菜单',
     returnToTopLabel: '回到顶部',
-    // outline: [1, 2],
+    outline: [1, 2],
     nav: navConfig,
     search: {
       provider: 'local'

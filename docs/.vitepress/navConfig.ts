@@ -9,7 +9,7 @@ const navConfig = [
     text: '面试宝典',
     items: [
       { text: 'HTML+CSS', link: '/interview/html_css' },
-      { text: 'JavaScript', link: '/ interview/javascript' }
+      { text: 'JavaScript', link: '/interview/javascript' }
     ]
   },
 
