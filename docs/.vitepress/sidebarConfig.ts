@@ -13,7 +13,9 @@ const sidebarConfig = [
     collapsed: false, // 侧边栏是否收起
     items: [
       { text: 'HTML+CSS', link: '/interview/html_css' },
-      { text: 'JavaScript', link: '/interview/javascript' }
+      { text: 'JavaScript', link: '/interview/javascript' },
+      { text: 'Vue', link: '/interview/vue' },
+      { text: 'Http', link: '/interview/http' }
     ]
   },
   {
