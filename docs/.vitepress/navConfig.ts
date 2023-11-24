@@ -11,6 +11,7 @@ const navConfig = [
       { text: 'HTML+CSS', link: '/interview/html_css' },
       { text: 'JavaScript', link: '/interview/javascript' },
       { text: 'Vue', link: '/interview/vue' },
+      { text: 'React', link: '/interview/react' },
       { text: 'Http', link: '/interview/http' }
     ]
   },
