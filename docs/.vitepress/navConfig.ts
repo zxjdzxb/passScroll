@@ -13,10 +13,14 @@ const navConfig = [
       { text: 'Vue', link: '/interview/vue' },
       { text: 'React', link: '/interview/react' },
       { text: 'Http', link: '/interview/http' },
-      {text:'工程化',link:'/interview/engineering'}
+      { text: '工程化', link: '/interview/engineering' }
     ]
   },
-
+  {
+    text: '博客分享',
+    collapsed: true, // 侧边栏是否收起
+    items: []
+  },
   {
     text: '排序算法',
     items: [

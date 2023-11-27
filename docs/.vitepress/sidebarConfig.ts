@@ -21,6 +21,11 @@ const sidebarConfig = [
     ]
   },
   {
+    text: '博客分享',
+    collapsed: true, // 侧边栏是否收起
+    items: []
+  },
+  {
     text: '排序算法',
     collapsed: true, // 侧边栏是否收起
     items: [
