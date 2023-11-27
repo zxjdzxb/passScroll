@@ -16,7 +16,8 @@ const sidebarConfig = [
       { text: 'JavaScript', link: '/interview/javascript' },
       { text: 'Vue', link: '/interview/vue' },
       { text: 'React', link: '/interview/react' },
-      { text: 'Http', link: '/interview/http' }
+      { text: 'Http', link: '/interview/http' },
+      { text: '工程化', link: '/interview/engineering' }
     ]
   },
   {

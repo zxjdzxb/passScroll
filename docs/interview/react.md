@@ -359,3 +359,113 @@ useMemo 用来缓存函数执行的结果。如每次渲染时都要执行一段
 
 <!---->
 :::
+
+## 说说对高阶组件（HOC）的理解？
+
+::: details
+高阶组件（Higher-Order Components，HOC）是 React 中一种常见的模式，用于复用组件逻辑、增强组件功能、或者对现有组件进行包装。
+
+### HOC 的特点：
+
+1. **函数接收组件作为参数：** HOC 是一个函数，接收一个组件作为参数，并返回一个新的增强型组件。
+
+2. **返回新组件：** HOC 返回的新组件可以拥有状态、逻辑、生命周期方法等，并可以渲染被包装的组件。
+
+3. **增强组件功能：** HOC 可以在不改变原始组件代码的情况下，为组件增加新的功能、属性或状态。
+
+### HOC 的应用场景：
+
+1. **代码复用：** 在多个组件之间共享相同的逻辑或状态，可以将该逻辑抽象成 HOC，并在需要时使用。
+
+2. **渲染劫持：** HOC 可以对组件的渲染进行劫持，例如添加 Loading 状态、认证控制等。
+
+3. **逻辑抽象：** 将通用的逻辑抽象到 HOC 中，例如处理表单逻辑、数据获取等。
+
+### 示例：
+
+```JSX
+// 高阶组件示例：增加日志记录功能的 HOC
+import React from 'react';
+
+const withLogger = (WrappedComponent) => {
+  return class extends React.Component {
+    componentDidMount() {
+      console.log(`Component "${WrappedComponent.name}" mounted`);
+    }
+
+    render() {
+      return <WrappedComponent {
+        ...this.props
+      }
+      />;
+    }
+  };
+};
+
+// 使用高阶组件包装原始组件
+class MyComponent extends React.Component {
+  render() {
+    return <div > Hello, HOC! </div>;
+  }
+}
+
+const EnhancedComponent = withLogger(MyComponent); // 使用高阶组件包装 MyComponent
+
+// 在应用中渲染增强后的组件
+function App() {
+  return (
+    <div>
+    <EnhancedComponent/>
+    </div>
+  );
+}
+
+export default App;
+```
+
+在这个示例中， `withLogger` 是一个高阶组件，接收一个组件作为参数，并返回一个增强了日志记录功能的新组件。被 `withLogger` 包装的 `MyComponent` 在渲染时会输出组件挂载的日志信息。
+
+高阶组件是 React 中一种非常灵活的模式，可以有效地实现代码复用、逻辑抽象和组件增强等功能。
+:::
+
+## 说说对React refs 的理解？
+
+::: details
+在 React 中，refs 是一个用于访问在 DOM 元素或类组件实例上的引用的技术。它提供了一种方式来直接访问组件实例或 DOM 元素，以便在需要时可以操作它们。
+
+### 使用场景：
+
+1. **访问 DOM 元素：** 通过 refs 可以访问 DOM 元素，执行 DOM 操作或获取元素信息（如输入框的值、滚动位置等）。
+
+2. **访问类组件实例：** 通过 refs 可以访问类组件实例，在需要时调用组件中的方法或获取其状态。
+
+### 创建 refs：
+
+1. **通过 React.createRef()：** 在类组件中使用 `React.createRef()` 来创建一个 ref 对象。
+
+```JSX
+   class MyComponent extends React.Component {
+     constructor(props) {
+       super(props);
+       this.myRef = React.createRef();
+     }
+
+     render() {
+       return <div ref = {this.myRef}> Example </div>;
+     }
+   }
+```
+
+2. ** 在函数组件使用回调函数来创建 refs。
+
+```JSX
+  function App(props) {
+  const myref = useRef()
+  return (
+    <>
+      <div ref={myref}></div>
+    </>
+  )
+}
+
+```
