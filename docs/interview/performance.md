@@ -1,6 +1,10 @@
 # 性能优化
 
+<!-- 
+
 ![image.png](../public/yahu.awebp)
+
+ -->
 
 ## 网络优化
 
