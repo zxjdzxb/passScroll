@@ -2,10 +2,6 @@
 const navConfig = [
   { text: '主页', link: '/' },
   {
-    text: 'Markdown示例',
-    link: '/vite/markdown-examples'
-  },
-  {
     text: '面试宝典',
     items: [
       { text: 'HTML+CSS', link: '/interview/html_css' },
