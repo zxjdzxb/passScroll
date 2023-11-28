@@ -204,3 +204,7 @@ Webpack Dev Server 的代理配置为开发环境下的跨域问题提供了解�
 
 3.  不支持非现代浏览器
 :::
+
+## 性能优化
+
+[performance](./performance)

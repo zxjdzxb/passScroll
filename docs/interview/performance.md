@@ -45,14 +45,13 @@
 
 ### 使用事件委托（简化DOM操作）
 
-```js
-< ul >
-  <
-  li > 苹果 < /li> <
-li > 香蕉 < /li> <
-li > 凤梨 < /li> < /
-ul > ​ <
-  script >
+```html
+<ul>
+  <li> 苹果 </li>
+  <li> 香蕉 </li>
+  <li> 凤梨 </li>
+</ul> ​
+<script>
   // good
   document.querySelector('ul').onclick = (event) => {
     const target = event.target
@@ -60,13 +59,13 @@ ul > ​ <
       console.log(target.innerHTML)
     }
   }​
-// bad
-document.querySelectorAll('li').forEach((e) => {
+  // bad
+  document.querySelectorAll('li').forEach((e) => {
     e.onclick = function() {
       console.log(this.innerHTML)
     }
-  }) <
-  /script>
+  })
+</script>
 ```
 
 ### css 放 ，js 脚本放 最底部。
