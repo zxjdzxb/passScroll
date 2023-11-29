@@ -14,7 +14,7 @@
 
 ## （3）图片演示
 
-![希尔排序](shellsort.png)
+![希尔排序](./img/shellsort.png)
 
 ## （4）代码示例
 
