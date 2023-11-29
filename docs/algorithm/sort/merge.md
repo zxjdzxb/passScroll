@@ -18,7 +18,7 @@
 
 ## （3）图片演示
 
-![动图](https://pic3.zhimg.com/v2-cdda3f11c6efbc01577f5c29a9066772_b.webp)
+![归并排序](image-3.png)
 
 ## （4）代码示例
 

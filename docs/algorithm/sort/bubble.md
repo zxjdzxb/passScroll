@@ -13,11 +13,7 @@
 
 ## （3）动图演示
 
-<!-- 
-
-![image.jpg](../../public/bubble.awebp)
-
- -->
+![冒泡排序](image-1.png)
 
 ## （4）代码演示
 

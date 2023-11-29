@@ -208,11 +208,7 @@ TCP/IP 的四层结构则如下表所示：
 | FIN     | 用来断开连接
 ::: details
 
-<!-- 
-
-![image.jpg](../../public/tcp.png)
-
- -->
+![image.jpg](tcp.png)
 
 #### 三次握手
 

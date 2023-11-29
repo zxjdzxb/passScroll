@@ -1,10 +1,6 @@
 # 性能优化
 
-<!-- 
-
-![image.png](../public/yahu.awebp)
-
- -->
+![雅虎军规](image-3.png)
 
 ## 网络优化
 

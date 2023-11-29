@@ -21,7 +21,7 @@
 
 ## （3）动态图演示
 
-![插入排序](../../public/insertion.gif)
+![插入排序](insertion.gif)
 
 ## （4）代码示例
 
