@@ -57,6 +57,10 @@ Object.prototype.toString.call(undefined); // "[object Undefined]"
 
 :::
 
+## 数组方法
+
+[一文掌握数组](../algorithm/data-structure/array.md) <!-- you can omit extension -->
+
 ## 判断数组的方式有哪些
 
 ::: details
