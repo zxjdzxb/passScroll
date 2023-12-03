@@ -9,9 +9,9 @@ hero:
     name: 通关秘籍
     text: 分享知识，随笔
     tagline: HTML , CSS , JS , HTTP, 算法 ……
-    # image:
-    #     src: /vite.png
-    #     alt: Vite
+    image:
+        src: /vite.jpg
+        alt: png
     actions:
 
         - theme: brand
