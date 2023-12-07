@@ -531,16 +531,19 @@ display:-webkit-box; // 作为弹性伸缩盒子模型显示。
 
 ```css
 /* CSS */
-.clearfix:after {
-  content: "\200B";
-  display: table;
+.clearfix::after {
+  content: ".";
+  display: block;
   height: 0;
   clear: both;
+  visibility: hidden;
 }
 
 .clearfix {
   *zoom: 1;
 }
+
+/* IE6、7 专有 */
 ```
 
 :::
@@ -559,10 +562,12 @@ display:-webkit-box; // 作为弹性伸缩盒子模型显示。
 * display 值为：inline-block、table-cell、table-caption、flex等
 <!---->
 *   overflow 值不为 visible 的块元素
+
+<!---->
 **解决了什么问题：**
 1.  清除浮动（为什么不用 .clearfix 呢？）
 <!---->
-2.  防止 margin 合并
+1.  防止 margin 合并
 
 解决margin的重叠问题：由于BFC是一个独立的区域，内部的元素和外部的元素互不影响，将两个元素变为两个BFC，就解决了margin重叠的问题。
 解决高度塌陷的问题：在对子元素设置浮动后，父元素会发生高度塌陷，也就是父元素的高度变为0。解决这个问题，只需要把父元素变成一个BFC。常用的办法是给父元素设置overflow:hidden。

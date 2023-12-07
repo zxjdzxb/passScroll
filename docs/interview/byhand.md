@@ -382,3 +382,5 @@ mySetInterval(sayHello, 1000); // 每隔 1 秒输出一次 "Hello!"
 
 这段代码通过定义一个 `loop` 函数，利用 `setTimeout` 实现了类似 `setInterval` 的功能。在每次函数执行完后，再次调用 `setTimeout` 来实现循环执行，以达到间隔一定时间执行一次函数的效果。
 :::
+
+## 大数相加

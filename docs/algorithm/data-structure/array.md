@@ -398,7 +398,11 @@ for (var item of arr) {
 }
 ```
 
+<!--
+
 ![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a106004df4ea4a6c9392a0c81ab13a62~tplv-k3u1fbpfcp-watermark.image?)
+
+ -->
 
 ### for...in
 
@@ -418,7 +422,11 @@ for (let key in obj) {
 }
 ```
 
+<!--
+
 ![image.png](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/98ce2ecf891640d09a0dbe984ae3c52b~tplv-k3u1fbpfcp-watermark.image?)
+
+ -->
 
 #### 对比
 
@@ -433,7 +441,11 @@ for (var item of arr) {
 }
 ```
 
+<!-- 
+
 ![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/13ae46fdd86349b3af3e6a5b067da670~tplv-k3u1fbpfcp-watermark.image?)
+
+ -->
 
 ### Array.from( )
 
