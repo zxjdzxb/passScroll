@@ -92,38 +92,6 @@ null == undefined; // true (在使用双等号时，null 和 undefined 是相等
 
 :::
 
-## intanceof 操作符的实现原理及实现
-
-::: details
-1. 首先，获取 obj 的原型，使用 Object.getPrototypeOf(obj) 或者 obj.__proto__。
-2. 获取构造函数的原型，即 Constructor.prototype。
-3. 检查 obj 的原型链上是否存在构造函数的原型。如果在原型链上找到了构造函数的原型，那么返回 true；否则返回 false。
-
-```JS
-function myInstanceof(obj, Constructor) {
-  // 获取 obj 的原型
-  let proto = Object.getPrototypeOf(obj);
-
-  // 获取构造函数的原型
-  let prototype = Constructor.prototype;
-
-  // 沿着原型链向上查找，直到 proto 为 null（即到达原型链的顶部）
-  while (proto !== null) {
-    // 如果找到了构造函数的原型，则返回 true
-    if (proto === prototype) {
-      return true;
-    }
-    // 否则继续向上查找原型链
-    proto = Object.getPrototypeOf(proto);
-  }
-
-  // 如果在原型链上都没找到构造函数的原型，则返回 false
-  return false;
-}
-```
-
-:::
-
 ## 为什么0.1+0.2 ! == 0.3，如何让其相等
 
 ::: details
@@ -302,6 +270,11 @@ closureFunc(); // 输出：I am outer
 ### 浅拷贝（Shallow Copy）：
 
 浅拷贝会创建一个新的对象或数组，并复制原始对象或数组的基本数据结构，但是对于嵌套的对象或数组，它们只会复制引用，而不是创建全新的对象或数组。
+
+* Object.assign({}, sourceObject)
+* 扩展运算符 { ...sourceObject }
+* Array.slice()
+* Array.concat()
 
 ```javascript
 // 浅拷贝示例
