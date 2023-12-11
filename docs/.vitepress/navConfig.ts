@@ -11,7 +11,8 @@ const navConfig = [
       { text: 'Http', link: '/interview/http' },
       // { text: '性能优化', link: '/interview/performance' },
       { text: '工程化', link: '/interview/engineering' },
-      { text: '手写', link: '/interview/byhand' }
+      { text: '手写', link: '/interview/byhand' },
+      { text: '每日一练', link: '/interview/practice_daily' }
     ]
   },
   {
