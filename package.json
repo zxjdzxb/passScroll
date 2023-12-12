@@ -41,6 +41,8 @@
     "eslint-plugin-vue": "^9.15.1",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
     "vite": "^4.2.0",
     "vitepress": "^1.0.0-rc.25"
   }
