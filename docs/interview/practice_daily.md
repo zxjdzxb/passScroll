@@ -213,6 +213,8 @@ var compareVersion = function(version1, version2) {
 
   const maxLen = Math.max(v1.length, v2.length);
   for (let i = 0; i < maxLen; i++) {
+    // arr1[i] - '0' ，js 会强制转换成 number 然后相减
+    // 例如：（'01' - '0'）， 结果是 1 （number 类型）
     const num1 = v1[i] ? v1[i] - "0" : 0;
     const num2 = v2[i] ? v2[i] - "0" : 0;
     if (num1 > num2) {
