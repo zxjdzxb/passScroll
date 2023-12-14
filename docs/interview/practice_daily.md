@@ -100,7 +100,7 @@ function lengthOfLongestSubstring(s: string): number {
 * [牛客网 题解](https://blog.nowcoder.net/n/950d8331e9004749adc1a3d98a5ec29f)
 ::: details
 
-## 解法一：JS Sort
+### 解法一：JS Sort
 
 * 思路：
 * （1）先判断 B 为空直接 return，A 为空则将 B shift 到 A 中
@@ -120,7 +120,7 @@ export function merge(A: number[], m: number, B: number[], n: number) {
 }
 ```
 
- ## 解法二：双指针
+ ### 解法二：双指针
  * 思路：
  * （1）先判断 B 为空直接 return，A 为空则将 B shift 到 A 中
  * （2）使用三个指针，len1 指向数组 A 的最大元素，len2 指向数组B的最大元素，len 指向数组A空间的结尾处。
@@ -146,6 +146,83 @@ export function merge(A: number[], m: number, B: number[], n: number) {
   while (bIndex >= 0) {
     A[mIndex--] = B[bIndex--];
   }
+}
+```
+
+:::
+
+## 字符串相加（大数加法）
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/add-strings/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/add-strings/solution/by-hovinghuang-l59r/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/11ae12e8c6fe48f883cad618c2e81475?tpId=295&tqId=1061819&ru=/exam/oj&qru=/ta/format-top101/question-ranking&sourceUrl=%2Fexam%2Foj%3Ftab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D295)
+ * [牛客网 题解](https://blog.nowcoder.net/n/1027295c5c8d44f7bbfe2b276e5adf20)
+::: details
+* 创建指针 *i* 指向 nums1 末位数字，*j* 指向 nums2 末位数字。
+* *i*, *j* 数字相加，用进位就用 carry 来记录进位值，无则为 0。
+* 若产生进位，则当前数字为 (*i* + *j*)%10 的值。
+* 若遍历过程中，nums1 或 nums2 当前已无数字，则用 0 补位来计算。
+
+```JS
+/**
+ * @param {string} num1
+ * @param {string} num2
+ * @return {string}
+ */
+var addStrings = function(num1, num2) {
+  let i = num1.length - 1,
+    j = num2.length - 1,
+    carry = 0,
+    ans = [];
+  while (i >= 0 || j >= 0 || carry !== 0) {
+    let c1 = i >= 0 ? num1[i] - '0' : 0,
+      c2 = j >= 0 ? num2[j] - '0' : 0;
+    let sum = c1 + c2 + carry;
+    ans.unshift(sum % 10);
+    carry = Math.floor(sum / 10);
+    i--;
+    j--;
+  }
+  return ans.join('');
+}
+```
+
+:::
+ ## 比较版本号
+ * [leetcode 题目](https://leetcode-cn.com/problems/compare-version-numbers/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/compare-version-numbers/solution/by-hovinghuang-rmlf/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/2b317e02f14247a49ffdbdba315459e7)
+ * [牛客网 题解](https://blog.nowcoder.net/n/5569dbf30e3e45ea977152a629d86439)
+::: details
+ * 解法一：分割截取
+ * 思路：
+ *（1）先根据. 号分割成字符串数组，获取两个数组中的最大长度值，
+ *（2）按顺序遍历比较，详细过程看以下代码
+ * 时间复杂度：O(max(n, m))
+ * 空间复杂度：O(max(n, m))
+
+```JS
+/**
+ * @param {string} version1
+ * @param {string} version2
+ * @return {number}
+ */
+var compareVersion = function(version1, version2) {
+  const v1 = version1.split(".");
+  const v2 = version2.split(".");
+
+  const maxLen = Math.max(v1.length, v2.length);
+  for (let i = 0; i < maxLen; i++) {
+    const num1 = v1[i] ? v1[i] - "0" : 0;
+    const num2 = v2[i] ? v2[i] - "0" : 0;
+    if (num1 > num2) {
+      return 1;
+    } else if (num1 < num2) {
+      return -1;
+    }
+  }
+  return 0;
+
 }
 ```
 
