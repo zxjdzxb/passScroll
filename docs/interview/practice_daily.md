@@ -229,3 +229,47 @@ var compareVersion = function(version1, version2) {
 ```
 
 :::
+
+## 有效括号序列
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/valid-parentheses/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/valid-parentheses/solution/by-hovinghuang-6gz1/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/37548e94a270412c8b9fb85643c8ccc2?tpId=295&tqId=726&ru=/exam/oj&qru=/ta/format-top101/question-ranking&sourceUrl=%2Fexam%2Foj%3Ftab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D295)
+ * [牛客网 题解](https://blog.nowcoder.net/n/620e933e59534064a9722bfa6da0c3d0)
+::: details
+* 🧠思路
+* 有效括号字符串的长度，一定是偶数！
+* 右括号前面，必须是相对应的左括号，才能抵消！
+* 右括号前面，不是对应的左括号，那么该字符串，一定不是有效的括号！
+* 时间复杂度：O(n)，其中 n 为字符串长度
+* 空间复杂度：O(n+∣Σ∣)，其中 Σ 表示字符集，本题中字符串只包含 6 种括号，∣Σ∣=6|。栈中的字符数量为 O(n)，而哈希表使用的空间为 O(∣Σ∣)，相加即可得到总空间复杂度。
+
+```JS
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var isValid = function(s) {
+  s = s.split('');
+  let sl = s.length;
+  if (sl % 2) return false;
+  let map = new Map([
+    [')', '('],
+    [']', '['],
+    ['}', '{']
+  ]);
+  let stack = [];
+  for (let i of s) {
+    console.log(map.get(i))
+    if (map.get(i)) {
+      if (stack[stack.length - 1] !== map.get(i)) return false;
+      else stack.pop();
+    } else {
+      stack.push(i);
+    }
+  }
+  return !stack.length;
+}
+```
+
+:::
