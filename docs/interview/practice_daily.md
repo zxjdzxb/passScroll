@@ -273,3 +273,121 @@ var isValid = function(s) {
 ```
 
 :::
+
+## 两数之和
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/two-sum/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/two-sum/solution/by-hovinghuang-8jqr/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/20ef0972485e41019e39543e8e895b7f?tpId=295&tqId=745&ru=/exam/oj&qru=/ta/format-top101/question-ranking&sourceUrl=%2Fexam%2Foj%3Ftab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D295)
+ * [牛客网 题解](https://blog.nowcoder.net/n/61a9e5d2ac2f46db9f6f9e324faab016)
+
+::: details
+
+### 双循环
+
+* 第一次接触题目，首先肯定是想到暴力解法，通过双循环遍历数组，找nums[i] + nums[j] === target。
+* 时间复杂度: O(n^2)
+* 空间复杂度: O(1)
+
+```JS
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+  let res = []
+  for (let i = 0, len = nums.length; i < len; i++) {
+    let dif = target - nums[i]
+    // 因为同一元素不允许重复出现，所以从i的下一位开始遍历
+    for (let j = i + 1; j < len; j++) {
+      if (nums[j] === dif) {
+        res = [i, j];
+        return res
+      }
+    }
+  }
+  // 所有样例都是有返回结果的，这里无所谓
+  return res;
+
+};
+```
+
+### 哈希表
+
+ * 思路：遍历的同时借助哈希表，记录值和下标
+ * 时间复杂度：O(n)，最多遍历数组一遍，每次查询哈希表都是O(1)
+ * 空间复杂度：O(n)，最坏情况下找到数组结尾才找到，其他都加入哈希表，哈希表最长 n - 1
+
+```JS
+var twoSum = function(nums, target) {
+  let map = new Map();
+  for (let i = 0, len = nums.length; i < len; i++) {
+    let dif = target - nums[i]
+    if (map.has(dif)) {
+      return [map.get(dif), i];
+    } else {
+      map.set(nums[i], i);
+    }
+  }
+  return [];
+};
+```
+
+:::
+
+## 爬楼梯（跳台阶）
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/climbing-stairs/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/climbing-stairs/solution/by-hovinghuang-bl5r/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/8c82a5b80378478f9484d87d1c5f12a4)
+ * [牛客网 题解]https://blog.nowcoder.net/n/7057ccebe8fd452580442b74ffbb8d90
+::: details
+
+### 递归
+
+ * 思路：满足斐波那契数列公式，最简单的肯定是递归
+ * 时间复杂度：O(2^n)
+ * 空间复杂度：O(n)
+ */
+
+```JS
+ function climbStairs(n: number): number {
+
+   if (n <= 1) {
+     return 1; // 当楼梯数为 0 或 1 时，只有一种方法
+   }
+   return climbStairs(n - 1) + climbStairs(n - 2); // 爬到第 n 阶楼梯的方法数等于爬到第 n-1 阶楼梯的方法数加上爬到第 n-2 阶
+
+ };
+```
+
+### 动态规划
+
+* 本问题其实常规解法可以分成多个子问题，爬第n阶楼梯的方法数量，等于 2 部分之和
+
+1. 爬上 n−1n-1n−1 阶楼梯的方法数量。因为再爬1阶就能到第n阶
+2. 爬上 n−2n-2n−2 阶楼梯的方法数量，因为再爬2阶就能到第n阶
+所以我们得到公式 dp[n]=dp[n−1]+dp[n−2]
+同时需要初始化 dp[0]=1 和 dp[1]=1
+* 时间复杂度：O(n)
+* 空间复杂度：O(n)
+
+```JS
+var climbStairs = function(n) {
+  if (n <= 1) {
+    return 1; // 当楼梯数为 0 或 1 时，只有一种方法
+  }
+  const dp = new Array(n + 1);
+  dp[0] = 1;
+  dp[1] = 1;
+
+  for (let i = 2; i <= n; i++) {
+    dp[i] = dp[i - 1] + dp[i - 2];
+  }
+
+  return dp[n]; // 最终结果存储在 dp[n] 中
+};
+```
+
+:::
