@@ -341,7 +341,7 @@ var twoSum = function(nums, target) {
  * [leetcode 题目](https://leetcode-cn.com/problems/climbing-stairs/)
  * [leetcode 题解](https://leetcode-cn.com/problems/climbing-stairs/solution/by-hovinghuang-bl5r/)
  * [牛客网 题目](https://www.nowcoder.com/practice/8c82a5b80378478f9484d87d1c5f12a4)
- * [牛客网 题解]https://blog.nowcoder.net/n/7057ccebe8fd452580442b74ffbb8d90
+ * [牛客网 题解](https://blog.nowcoder.net/n/7057ccebe8fd452580442b74ffbb8d90)
 ::: details
 
 ### 递归
@@ -366,8 +366,8 @@ var twoSum = function(nums, target) {
 
 * 本问题其实常规解法可以分成多个子问题，爬第n阶楼梯的方法数量，等于 2 部分之和
 
-1. 爬上 n−1n-1n−1 阶楼梯的方法数量。因为再爬1阶就能到第n阶
-2. 爬上 n−2n-2n−2 阶楼梯的方法数量，因为再爬2阶就能到第n阶
+1. 爬上 n−1 阶楼梯的方法数量。因为再爬1阶就能到第n阶
+2. 爬上 n−2 阶楼梯的方法数量，因为再爬2阶就能到第n阶
 所以我们得到公式 dp[n]=dp[n−1]+dp[n−2]
 同时需要初始化 dp[0]=1 和 dp[1]=1
 * 时间复杂度：O(n)
@@ -387,6 +387,282 @@ var climbStairs = function(n) {
   }
 
   return dp[n]; // 最终结果存储在 dp[n] 中
+};
+```
+
+:::
+
+## 全排列
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/permutations/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/permutations/solution/by-hovinghuang-ubrb/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/4bcf3081067a4d028f95acee3ddcd2b1)
+ * [牛客网 题解](https://blog.nowcoder.net/n/02102d26f1bb4026af9be0ec38984ec9)
+::: details
+
+### 回溯 + 递归
+
+ * 思路：
+ *  回溯函数：定义一个回溯函数 backtrack，接受两个参数：path（用于保存当前的部分排列）和 used（用于标记数字的使用情况）。
+* 回溯递归：
+  + 当 path 的长度等于 nums 的长度时，说明得到了一个完整的排列，将其加入到结果数组 result 中。
+  + 遍历数组 nums 中的每个数字，如果该数字已经被标记为已使用（used[num] === true），则跳过该数字。
+  + 如果该数字未被使用，将其加入到 path 数组中，并标记为已使用（used[num] = true），然后递归调用 backtrack 进入下一层决策树。
+  + 在递归结束后（回溯），撤销对数字的选择，即将其从 path 中弹出，并恢复数字的状态为未使用（used[num] = false）。
+ * 时间复杂度: O(n!), n个元素的数组进行全排列
+ * 空间复杂度: O(n), 递归栈的最大深度为数组长度n，res属于返回必要空间
+
+```JS
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var permute = function(nums) {
+  const result = []
+
+  function backtrack(path, used) {
+    if (path.length === nums.length) {
+      result.push([...path]);
+      return;
+    }
+
+    for (const num of nums) {
+      if (used[num]) continue; // 已经使用过的数字跳过
+
+      path.push(num); // 选择当前数字
+      used[num] = true; // 标记当前数字已被使用
+      backtrack(path, used); // 递归进入下一层决策树
+      path.pop(); // 回溯，撤销选择
+      used[num] = false; // 恢复数字状态，标记为未使用
+    }
+  }
+
+  backtrack([], []);
+  return result;
+};
+```
+
+:::
+
+## 大子数组和(连续子数组的最大和)
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/maximum-subarray/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/maximum-subarray/solution/by-hovinghuang-exw9/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/459bd355da1549fa8a49e350bf3df484)
+ * [牛客网 题解](https://blog.nowcoder.net/n/8d36ffcdc332432197d9f44e6af0e78c)
+::: details
+
+### 动态规划
+
+* 定义一个变量max_sum来保存当前找到的最大和，
+* 另一个变量current_sum来保存当前正在检查的子数组的和
+* 遍历整个数组，在遍历的过程中不断更新current_sum，并且在每次更新时更新max_sum
+* 时间复杂度：O(n)，遍历一遍。
+* 空间复杂度：O(n)，动态规划辅助数组长度为n
+
+```JS
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxSubArray = function(nums) {
+
+  if (nums.length === 0) {
+    return 0;
+  }
+
+  let maxSum = nums[0];
+  let currentSum = nums[0];
+
+  for (let i = 1; i < nums.length; i++) {
+    currentSum = Math.max(nums[i], currentSum + nums[i]);
+    maxSum = Math.max(maxSum, currentSum);
+  }
+
+  return maxSum;
+
+};
+```
+
+:::
+
+## 路径总和
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/path-sum/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/path-sum/solution/by-hovinghuang-ax6m/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/508378c0823c423baa723ce448cbfd0c)
+ * [牛客网 题解](https://blog.nowcoder.net/n/b763226e0fd74c01a2a643a10db22c7b)
+
+::: details
+
+### 递归（先序遍历）
+
+ * 思路：
+ *   递归地在树的节点上进行遍历，并不断减去当前节点的值，直到达到叶子节点，检查减到0的情况
+ * 时间复杂度：O(n)，先序遍历二叉树所有结点
+ * 空间复杂度：O(n)，最坏情况二叉树化为链表，递归栈空间最大为n
+
+```JS
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} targetSum
+ * @return {boolean}
+ */
+var hasPathSum = function(root, targetSum) {
+  if (!root) {
+    return false;
+  }
+
+  // 如果当前节点是叶子节点，检查当前值是否等于剩余的目标和
+  if (!root.left && !root.right && targetSum - root.val === 0) {
+    return true;
+  }
+
+  // 递归检查左子树或右子树
+  return hasPathSum(root.left, targetSum - root.val) || hasPathSum(root.right, targetSum - root.val);
+};
+```
+
+:::
+
+## 反转链表
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/reverse-linked-list/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/reverse-linked-list/solution/by-hovinghuang-zhkh/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/75e878df47f24fdc9dc3e400ec6058ca)
+ * [牛客网 题解](https://blog.nowcoder.net/n/087ff0e6f04c4ff699596619f7b4adfd)
+::: details
+ ### 迭代（双指针）
+ * 思路：
+ *   我们可以设置两个指针，一个当前节点的指针，一个上一个节点的指针(初始为空)。
+ *   遍历整个链表，每到一个节点，断开当前节点与后面节点的指针，并用临时变量记录后一个节点，然后当前节点指向上一个节点。
+ * 再轮换当前指针与上-一个指针，让它们进入下一个节点及下一个节点的前序节点。
+ * 时间复杂度: O(n)，遍历链表一次
+ * 空间复杂度: 0(1)，无额外空间使用
+
+```JS
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+
+var reverseList = function(head) {
+  let prev = null;
+  let curr = head; //指向头节点
+  while (curr) {
+    const tmp = curr.next; // 暂存后续节点
+    curr.next = prev; // 修改 next 引用指向
+    prev = curr; //pre 暂存 cur
+    curr = tmp; //cur 访问下一节点
+  }
+  return prev;
+};
+```
+
+### 递归
+
+ * 解法二：递归
+ * 思路：
+ *   从上述方法一，我们可以看到每当我们反转链表的一个节点以后，要遍历进入下一个节点进入反转，
+ *   相当于对后续的子链表进行反转，这就是一个子问题，因此我们也可以使用递归。
+ * 时间复杂度：O(n)，相当于递归遍历链表
+ * 空间复杂度：O(n)，递归栈深度为链表长度n
+
+```JS
+function reverseList(head) {
+  // 边界条件
+  if (head === null || head.next === null) {
+    return head;
+  }
+
+  // 递归调用反转链表
+  let reversedList = reverseList(head.next);
+
+  // 将当前节点的下一个节点的指针指向当前节点
+  head.next.next = head;
+  head.next = null;
+
+  return reversedList;
+}
+```
+
+:::
+
+## 三数之和
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/3sum/)
+ * [leetcode 题解](https://leetcode.cn/problems/3sum/solutions/12307/hua-jie-suan-fa-15-san-shu-zhi-he-by-guanpengchn/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/345e2ed5f81d4017bbb8cc6055b0b711)
+ * [牛客网 题解](https://blog.nowcoder.net/n/c9e6f346004f4aedaf087cbdb099b2e6)
+::: details
+
+### 数组遍历
+
+1. **排序数组：** 首先对输入的数组进行排序。这有助于后续的指针移动和重复项的跳过，同时也有利于找到所有满足条件的三元组。
+2. **双指针遍历：** 使用两层循环遍历数组。外层循环固定一个数值作为基准，内层循环使用左右双指针指向数组的头尾，并不断移动指针来寻找满足条件的三元组。
+3. **跳过重复项：** 在寻找三元组的过程中，遇到重复项需要跳过，以避免重复的三元组出现。
+
+#### 时间复杂度：
+
+* **排序：** 排序数组的时间复杂度为 O(nlogn)。
+* **双指针遍历：** 双指针的遍历时间复杂度为 O(n^2)，其中外层循环是 O(n)，内层循环是 O(n)。
+
+因此，总体时间复杂度为 O(nlogn + n^2)，即 O(n^2)。主要耗时的部分是双指针的遍历，而排序所需时间也被掩盖在其后。
+
+#### 空间复杂度：
+
+* **排序空间：** 排序所需的空间复杂度为 O(logn) 或 O(n)，取决于使用的排序算法是原地排序还是需要额外空间。
+* **结果空间：** 存储结果的空间复杂度为 O(n)，因为可能存储最多 O(n) 个满足条件的三元组。
+
+因此，总体空间复杂度为 O(n) 或 O(logn)（取决于排序算法）。空间复杂度主要受排序和存储结果的影响。
+
+```JS
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var threeSum = function(nums) {
+  let ans = [];
+  const len = nums.length;
+  if (nums == null || len < 3) return ans;
+  nums.sort((a, b) => a - b); // 排序
+  for (let i = 0; i < len; i++) {
+    if (nums[i] > 0) break; // 如果当前数字大于0，则三数之和一定大于0，所以结束循环
+    if (i > 0 && nums[i] == nums[i - 1]) continue; // 去重
+    let j = i + 1;
+    let k = len - 1;
+    while (j < k) {
+      const sum = nums[i] + nums[j] + nums[k];
+      if (sum == 0) {
+        ans.push([nums[i], nums[j], nums[k]]);
+        while (j < k && nums[j] == nums[j + 1]) j++; // 去重
+        while (j < k && nums[k] == nums[k - 1]) k--; // 去重
+        j++;
+        k--;
+      } else if (sum < 0) {
+        j++
+      } else if (sum > 0) {
+        k--
+      };
+    }
+  }
+  return ans;
+
 };
 ```
 
