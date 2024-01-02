@@ -1,6 +1,6 @@
 # 每日算法
 
-[根据这个仓库](https://github.com/hovinghuang/fe-agorithm-interview)来准备算法面试
+[根据大佬这个仓库](https://github.com/hovinghuang/fe-agorithm-interview)来准备算法面试
 
 ## 无重复字符的最长子串
 
@@ -662,6 +662,522 @@ var threeSum = function(nums) {
     }
   }
   return ans;
+
+};
+```
+
+:::
+
+## 二叉树的层序遍历
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/solution/by-hovinghuang-1hvt/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/04a5560e43e24e9db4595865dc9c63a3)
+ * [牛客网 题解](https://blog.nowcoder.net/n/10b0073f1d0043eba3d0f9646e43bbb4)
+::: details
+
+### 广度优先搜索 （BFS）
+
+二叉树的层序遍历使用广度优先搜索（BFS）的思路。它通过逐层遍历节点，首先访问根节点，然后是第二层所有节点，接着是第三层所有节点，以此类推。具体实现时，通常使用队列来辅助实现。
+
+1. **初始化**：首先将根节点放入队列中。
+2. **迭代**：循环遍历队列直到队列为空。
+   - 在每次循环中，获取当前队列中的节点，并将其值存储到结果集中。
+   - 将当前节点的左右子节点（如果存在）依次放入队列中。
+   - 当前队列的元素即为当前层的所有节点，通过不断迭代，依次访问每一层节点。
+
+#### 时间复杂度：
+
+* 时间复杂度为 O(n)，其中 n 为二叉树的节点数。因为要访问每个节点一次，所以时间复杂度是线性的。
+
+#### 空间复杂度：
+
+* 最坏情况下，当树是完全二叉树时，队列中可能存储最多的节点数是树的最底层节点数的一半（即 n/2 个节点）。因此空间复杂度是 O(n)。在最坏情况下，队列中存储了所有的叶子节点。
+
+这种层序遍历的实现基于队列数据结构，通过逐层存储节点并按顺序访问，确保了节点按层级有序输出的特性。
+
+```JS
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[][]}
+ */
+var levelOrder = function(root) {
+  const result = [];
+  if (!root) return result;
+
+  const queue = [root];
+
+  while (queue.length) {
+    const currentLevel = [];
+    const size = queue.length;
+
+    for (let i = 0; i < size; i++) {
+      const node = queue.shift();
+      currentLevel.push(node.val);
+
+      if (node.left) {
+        queue.push(node.left);
+      }
+
+      if (node.right) {
+        queue.push(node.right);
+      }
+    }
+
+    result.push(currentLevel);
+  }
+
+  return result;
+};
+```
+
+:::
+
+## 数组中的第K个最大元素
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/solution/by-hovinghuang-mes5/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/e016ad9b7f0b45048c58a9f27ba618bf)
+ * [牛客网 题解](https://blog.nowcoder.net/n/ea1b2f2bf02b48d38c75a4e684b5471e)
+::: details
+当使用基于快速排序的选择方法来找出数组中的第 K 个最大元素时，可以遵循以下思路：
+
+### 思路：
+
+1. **快速选择算法：** 类似于快速排序，但不需要对整个数组排序。通过划分数组，选择只关注包含目标元素的部分进行递归，以确定第 K 个最大元素的位置。
+* 数组中的第 1 大元素，是，从小到大排序后 n - 1 位置上的元素
+* 数组中的第 k 大元素，即，从小到大排序后 n - k 位置上的元素
+
+2. **快速选择步骤：**
+   - 使用 `partition` 函数选取一个 pivot（通常是选择右边界作为 pivot）并将数组划分为两部分。
+   - 将小于 pivot 的元素移到 pivot 左侧，大于 pivot 的元素移到 pivot 右侧，最终将 pivot 放置在它的最终位置上。
+   - 检查 pivot 的位置：
+
+     - 若 pivot 的索引等于 K，则找到了第 K 个最大元素，返回它。
+     - 若 pivot 的索引大于 K，则递归在左侧部分中继续寻找第 K 个最大元素。
+     - 若 pivot 的索引小于 K，则递归在右侧部分中寻找第 (K - pivot索引 - 1) 个最大元素。
+
+* **时间复杂度：**
+  + 平均情况下，快速选择的时间复杂度为 O(n)。
+  + 最坏情况下，时间复杂度为 O(n^2)，当每次选择的 pivot 都是当前部分的最小或最大值时出现。
+  + 但通常情况下能在近似线性时间内找到第 K 个最大元素。
+
+* **空间复杂度：**
+  + 空间复杂度为 O(logn) 到 O(n)，取决于递归调用栈的深度，即快速选择过程中进行的递归划分次数。
+
+```JS
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var findKthLargest = function(nums, k) {
+  if (k < 1 || k > nums.length) {
+    return -1; // 处理无效输入
+  }
+
+  return quickSelect(nums, 0, nums.length - 1, nums.length - k);
+}
+
+function quickSelect(nums, left, right, k) {
+  if (left === right) {
+    return nums[left];
+  }
+  const pivotIndex = partition(nums, left, right);
+  if (k === pivotIndex) {
+    return nums[k];
+  } else if (k < pivotIndex) {
+    return quickSelect(nums, left, pivotIndex - 1, k);
+  } else {
+    return quickSelect(nums, pivotIndex + 1, right, k);
+  }
+}
+
+function partition(nums, left, right) {
+  const pivot = nums[right];
+  let i = left;
+
+  for (let j = left; j < right; j++) {
+    if (nums[j] <= pivot) {
+      [nums[i], nums[j]] = [nums[j], nums[i]];
+      i++;
+    }
+  }
+
+  [nums[i], nums[right]] = [nums[right], nums[i]];
+  return i;
+}
+```
+
+:::
+
+## 买卖股票的最佳时机
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/solution/by-hovinghuang-6qhi/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/64b4262d4e6d4f6181cd45446a5821ec)
+ * [牛客网 题解](https://blog.nowcoder.net/n/4430ac0f65294e019d48345423b7e62f)
+
+::: details
+
+### 解法一：暴力法（嵌套循环）
+
+ * （1）我们需要找出给定数组中两个数字之间的最大差值（即，最大利润）。
+ * （2）此外，第二个数字（卖出价格）必须大于第一个数字（买入价格）。
+ * 时间复杂度：O(n^2)。
+ * 空间复杂度：0(1)，只使用了一个常数变量。
+
+```JS
+function maxProfit(prices: number[]): number {
+  let maxprofit = 0
+
+  for (let i = 0; i < prices.length - 1; i++) {
+    for (let j = i + 1; j < prices.length; j++) {
+      let profit = prices[j] - prices[i]
+      maxprofit = Math.max(maxprofit, profit)
+    }
+  }
+
+  return maxprofit
+};
+```
+
+###  解法二：贪心
+
+ * （1）将第一天看成价格最低，后续遍历的时候遇到价格更低则更新价格最低，
+ * （2）每次都比较最大收益与当日价格减去价格最低的值，选取最大值作为最大收益
+ * 时间复杂度：O(n)。
+ * 空间复杂度：0(1)，只使用了常数变量。
+
+```JS
+function maxProfit(prices: number[]): number {
+  let maxprofit = 0
+  if (prices.length === 0) return maxprofit
+
+  let minprice = prices[0] // 维护最低股票价格
+
+  for (let i = 0; i < prices.length; i++) {
+    minprice = Math.min(minprice, prices[i])
+    maxprofit = Math.max(maxprofit, prices[i] - minprice)
+  }
+
+  return maxprofit
+};
+```
+
+###  解法三：动态规划
+
+ * （1）用dp[i[0]表示 第i天不持股到该天为止的最大收益，dp[i][1]表 示第i天持股，到该天为止的最大收益。
+ * （2）(初始状态) 第一 天不持股，则总收益为0，dp[0][0]=0; 第- -天持股，则总收益为买股票的花费，此时为负数，dp[0][1] = - prices[0]。
+ * （3）(状态转移) 对于之后的每一天，如果当天不持股，有可能是前面的若干天中卖掉了或是还没买，因此到此为止的总收益和前一天相同，也有可能是当天才
+ *     卖掉，我们选择较大的状态dp[i][0] = max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+ * (4) 如果当天持股，有可能是前面若千天中买了股票，当天还没卖，因此收益与前一天相同，也有可能是当天买入，此时收益为负的股价，同样是选取最大值:dp[i][1] = max(dp[i - 1][1], -prices[i])。
+ * 时间复杂度：O(n)，遍历一次数组
+ * 空间复杂度：0(n)，动态规划富足数组的空间。
+
+```JS
+function maxProfit(prices: number[]): number {
+  const len = prices.length
+  if (len === 0) return 0
+
+  const dp: number[][] = [] // dp[i][0]表示某一天不持股到该天为止的最大收益，dp[i] [1]表示某天持股，到该天为止的最大收益
+  for (let i = 0; i < len; i++) {
+    dp[i] = []
+  }
+  dp[0][0] = 0 // 第一天不持股，总收益为0
+  dp[0][1] = -prices[0] // 第一天持股，总收益为减去该天的股价
+
+  for (let i = 1; i < len; i++) { // 遍历后续每天，状态转移
+    dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i])
+    dp[i][1] = Math.max(dp[i - 1][1], -prices[i])
+  }
+
+  return dp[len - 1][0] // 最后一天不持股，到该天为止的最大收益
+};
+```
+
+:::
+
+## 环形链表
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/linked-list-cycle/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/linked-list-cycle/solution/by-hovinghuang-ktep/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/650474f313294468a4ded3ce0f7898b9)
+ * [牛客网 题解](https://blog.nowcoder.net/n/ab8ae19d162a46c38761246e67aaf06f)
+::: details
+
+###  解法一：双指针
+
+ * （1）设置快慢两个指针，初始都指向链表头。
+ * （2）遍历链表，快指针每次走两步，慢指针每次走一步。
+ * （3）如果快指针到了链表末尾，说明没有环，因为它每次走两步，所以要验证连续两步是否为 NULL。
+ *  (4）如果链表有环，那快慢双指针会在环内循环，因为快指针每次走两步，因此快指针会在环内追到慢指针，二者相遇就代表有环。
+ * 时间复杂度: O(n), 最坏情况下遍历链表n个节点
+ * 空间复杂度: O(1)，仅使用了两个指针，没有额外辅助空间
+
+```JS
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var hasCycle = function(head) {
+  let slow = head,
+    fast = head; // 乌龟和兔子同时从起点出发
+  while (fast && fast.next) {
+    slow = slow.next; // 乌龟走一步
+    fast = fast.next.next; // 兔子走 两步
+    if (fast === slow) // 兔子追上乌龟（套圈），说明有环
+      return true;
+  }
+  return false; // 访问到了链表末尾，无环
+
+};
+```
+
+### 解法二：哈希
+
+ * （1）使用哈希表来存储所有已经访问过的节点。
+ * （2）每次我们到达一个节点，如果该节点已经存在于哈希表中，则说明该链表是环形链表，否则就将该节点加入哈希表中。
+ * （3）重复这一过程，直到我们遍历完整个链表即可。
+ * 时间复杂度: O(n)，最坏情况下遍历链表 n 个节点
+ * 空间复杂度: O(n)，其中 n 是链表中的节点数。主要为哈希表的开销，最坏情况下我们需要将每个节点插入到哈希表中一次。
+
+```JS
+  function hasCycle(head: ListNode | null): boolean {
+    if (head == null) return false
+
+    const seenMap = new Map()
+
+    while (head != null) {
+      if (seenMap.has(head)) return true
+      seenMap.set(head, 1)
+      head = head.next
+    }
+
+    return false
+  };
+```
+
+:::
+
+## 最长回文子串
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/longest-palindromic-substring/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/longest-palindromic-substring/solution/by-hovinghuang-0ru8/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/b4525d1d84934cf280439aeecc36f4af)
+ * [牛客网 题解](https://blog.nowcoder.net/n/2759f3a8d3d742a7aca16768d196fc21)
+::: details
+
+### 中心扩展法
+
+中心扩展法是一种寻找最长回文子串的方法。它的思路是从字符串的每个字符或者每两个字符之间作为中心向两边扩展，寻找回文串。
+
+1. **遍历字符串：** 遍历字符串中的每一个字符或者每两个字符（分别对应奇数和偶数长度的回文串）。
+2. **以当前字符为中心：** 从当前字符开始，向两边扩展检查是否满足回文串的条件，即左右两侧字符相同。
+3. **更新最长回文串：** 在扩展的过程中记录当前找到的最长回文串的起始和结束位置。
+
+#### 复杂度分析：
+
+* **时间复杂度：** 时间复杂度为 O(n^2)，其中 n 是字符串的长度。遍历字符串的过程中，对每个字符进行中心扩展，最差情况下需要 O(n) 的时间扩展回文串。
+* **空间复杂度：** 空间复杂度为 O(1)，只需要常数级别的额外空间来存储一些辅助变量。
+
+中心扩展法是一种相对简单且直观的方法，能够有效地找到最长的回文子串，但在最差情况下的时间复杂度较高。
+
+```JS
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var longestPalindrome = function(s) {
+  if (s.length < 2) {
+    return s
+  }
+  let l = 0;
+  let r = 0
+  for (let i = 0; i < s.length; i++) {
+    // 回文子串长度是奇数
+    helper(i, i)
+    // 回文子串长度是偶数
+    helper(i, i + 1)
+  }
+
+  function helper(m, n) {
+    while (m >= 0 && n < s.length && s[m] == s[n]) {
+      m--
+      n++
+    }
+    // 注意此处m,n的值循环完后  是恰好不满足循环条件的时刻 如果此轮询得到回文串长度大于之前记录， 记录此轮循边界
+    if (n - m - 1 > r - l - 1) {
+      r = n
+      l = m
+    }
+  }
+  return s.slice(l + 1, r)
+};
+```
+
+:::
+
+## 求根节点到叶节点数字之和
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/solution/by-hovinghuang-fq9e/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/185a87cd29eb42049132aed873273e83)
+ * [牛客网 题解](https://blog.nowcoder.net/n/08dbb5d39ecb4776889e7d8a7f31f736)
+::: details
+
+### 方法一：深度优先搜索
+
+* （1）从根节点开始，遍历每个节点，如果遇到叶子节点，则将叶子节点对应的数字加到数字之和。
+* （2）如果当前节点不是叶子节点，则计算其子节点对应的数字，然后对子节点递归遍历。
+* 时间复杂度：O(n)，其中 n 是二叉树的节点个数。对每个节点访问一次。
+* 空间复杂度：O(n)，其中 n 是二叉树的节点个数。空间复杂度主要取决于递归调用的栈空间，递归栈的深度等于二叉树的高度，最坏情况下，二叉树的高度等于节点个数，空间复杂度为 O(n)。
+
+```JS
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+const dfs = (root, prevSum) => {
+  if (root === null) {
+    return 0;
+  }
+  // 计算当前节点值与前一个累计值相加的和
+  const sum = prevSum * 10 + root.val;
+  if (root.left == null && root.right == null) {
+    // 如果当前节点为叶子节点，直接返回计算得到的累计和
+    return sum;
+  } else {
+    // 否则，继续递归计算左右子树的累计和，并将结果相加
+    return dfs(root.left, sum) + dfs(root.right, sum);
+  }
+}
+var sumNumbers = function(root) {
+  return dfs(root, 0);
+};
+```
+
+### 方法二：广度优先搜索
+
+ * 使用广度优先搜索，需要维护两个队列，分别存储节点和节点对应的数字。
+ * 初始时，将根节点和根节点的值分别加入两个队列。每次从两个队列分别取出一个节点和一个数字，进行如下操作：
+ * （1）如果当前节点是叶子节点，则将该节点对应的数字加到数字之和；
+ * （2）如果当前节点不是叶子节点，则获得当前节点的非空子节点，并根据当前节点对应的数字和子节点的值计算子节点对应的数字，
+ *  然后将子节点和子节点对应的数字分别加入两个队列。
+ * 时间复杂度：O(n)，其中 n 是二叉树的节点个数。对每个节点访问一次。
+ * 空间复杂度：O(n)，其中 n 是二叉树的节点个数。空间复杂度主要取决于递归调用的栈空间，递归栈的深度等于二叉树的高度，
+
+```JS
+var sumNumbers = function(root) {
+  if (root === null) {
+    return 0;
+  }
+
+  let sum = 0;
+  const nodeQueue = []; // 存放节点的队列
+  const numQueue = []; // 存放节点对应数字的队列
+
+  nodeQueue.push(root); // 根节点入队
+  numQueue.push(root.val); // 根节点的值入队
+
+  while (nodeQueue.length > 0) {
+    const node = nodeQueue.shift(); // 出队节点
+    const num = numQueue.shift(); // 出队节点对应的数字
+
+    if (node.left === null && node.right === null) {
+      sum += num; // 如果是叶子节点，将路径上的数字累加到总和中
+    } else {
+      if (node.left !== null) {
+        nodeQueue.push(node.left); // 左子节点入队
+        numQueue.push(num * 10 + node.left.val); // 左子节点对应的数字入队
+      }
+      if (node.right !== null) {
+        nodeQueue.push(node.right); // 右子节点入队
+        numQueue.push(num * 10 + node.right.val); // 右子节点对应的数字入队
+      }
+    }
+  }
+
+  return sum;
+};
+```
+
+:::
+
+## 二分查找
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/binary-search/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/binary-search/solution/by-hovinghuang-ks00/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/d3df40bd23594118b57554129cadf47b?)
+ * [牛客网 题解](https://blog.nowcoder.net/n/18779274e55745b682ab9be9bb9f438d)
+::: details
+
+### 思路
+
+二分查找是一种高效的搜索算法，用于在有序数组中查找特定元素的位置。其基本思路是不断地将待查找区间分成两半，并缩小搜索范围直至找到目标值或确定目标值不存在。
+
+1. **确定搜索区间：** 初始时，设定搜索区间为整个数组。
+2. **迭代或递归查找：**
+   - 找出中间元素，判断它是否等于目标值。
+   - 若等于目标值，直接返回该位置。
+   - 若中间元素小于目标值，则在右侧继续搜索。
+   - 若中间元素大于目标值，则在左侧继续搜索。
+3. **重复上述步骤：** 在新的搜索区间中重复执行上述步骤，直到找到目标值或搜索区间缩小为 0。
+
+### 复杂度分析：
+
+* **时间复杂度：** O(log n)，其中 n 是数组的长度。因为每一次迭代都将搜索区间缩小一半，所以时间复杂度是对数级别的。
+* **空间复杂度：** O(1)，因为二分查找只需要常数级别的额外空间。
+
+二分查找是一种高效的搜索算法，特别适用于有序数组。它的时间复杂度相对较低，但要求待查找的数组必须是有序的。
+
+```JS
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var search = function(nums, target) {
+  let left = 0,
+    right = nums.length - 1;
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+
+    // 如果找到目标元素，返回索引
+    if (nums[mid] === target) {
+      return mid;
+    } else if (nums[mid] < target) {
+      left = mid + 1; // 如果中间值小于目标值，在右侧继续查找
+    } else {
+      right = mid - 1; // 如果中间值大于目标值，在左侧继续查找
+    }
+  }
+
+  return -1; // 若未找到目标元素，返回 -1
 
 };
 ```
