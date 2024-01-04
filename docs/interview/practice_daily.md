@@ -1183,3 +1183,153 @@ var search = function(nums, target) {
 ```
 
 :::
+
+## 岛屿数量
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/number-of-islands/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/number-of-islands/solution/by-hovinghuang-d8tz/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/0c9664d1554e466aa107d899418e814e)
+ * [牛客网 题解](https://blog.nowcoder.net/n/73610fd87bd94e9590a4d71b9a898f79)
+
+::: details
+
+### 深度优先搜索
+
+ * （1）当我们遇到矩阵的某个元素为1时，首先将其置为了0
+ * （2）然后查看与它相邻的上下左右四个方向，如果这四个方向相邻元素为1，则进入该元素
+ * （3）进入该元素之后我们发现又回到了刚刚的子问题，又是把这一片相邻区域的 1 全部置为 0 ，因此可以用递归实现。
+ * 时间复杂度：O(nm)，其中m、n为矩阵的长和宽，需要遍历整个矩阵，每次dfs搜索需要经过每个值为1的元素，
+ * 但是最坏情况下也只是将整个矩阵变成0，因此相当于最坏遍历矩阵2次
+ * 空间复杂度：0(nm)，最坏情况下整个矩阵都是1，递归栈深度为
+
+![图解](image-2.png)
+
+```JS
+/**
+ * @param {character[][]} grid
+ * @return {number}
+ */
+var numIslands = function(grid) {
+  if (grid === null || grid.length === 0) {
+    return 0;
+  }
+
+  const rows = grid.length;
+  const cols = grid[0].length;
+  let count = 0;
+
+  const dfs = (i, j) => {
+    grid[i][j] = '0'; // 将访问过的陆地标记为 '0'
+    // 对当前陆地的上下左右进行深度优先搜索
+    if (i - 1 >= 0 && grid[i - 1][j] === '1') dfs(i - 1, j);
+    if (i + 1 < rows && grid[i + 1][j] === '1') dfs(i + 1, j);
+    if (j - 1 >= 0 && grid[i][j - 1] === '1') dfs(i, j - 1);
+    if (j + 1 < cols && grid[i][j + 1] === '1') dfs(i, j + 1);
+  };
+
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if (grid[i][j] === '1') {
+        count++; // 遇到新的陆地，增加岛屿数量
+        dfs(i, j); // 对当前陆地进行深度优先搜索
+      }
+    }
+  }
+
+  return count;
+};
+```
+
+:::
+
+## 括号生成
+
+* [leetcode 题目](https://leetcode-cn.com/problems/generate-parentheses/)
+* [leetcode 题解](https://leetcode-cn.com/problems/generate-parentheses/solution/by-hovinghuang-ueaq/)
+* [牛客网 题目](https://www.nowcoder.com/practice/c9addb265cdf4cdd92c092c655d164ca)
+* [牛客网 题解](https://blog.nowcoder.net/n/14c439288cc944d397206965bcc2d0bc)
+
+::: details
+
+### 暴力解法
+
+* 穷举所有可能的情况，然后检查它们是否满足问题的条件
+
+```JS
+var generateParenthesis = function(n) {
+  const result = [];
+
+  // 生成所有可能的括号组合
+  const generateAll = (current, n) => {
+    if (current.length === 2 * n) {
+      if (isValid(current)) {
+        result.push(current);
+      }
+    } else {
+      generateAll(current + '(', n);
+      generateAll(current + ')', n);
+    }
+  };
+
+  // 检查当前字符串是否是有效的括号组合
+  //可参考算法题 有效括号序列
+  const isValid = (str) => {
+    let balance = 0;
+    for (let i = 0; i < str.length; i++) {
+      if (str[i] === '(') {
+        balance++;
+      } else {
+        balance--;
+      }
+      if (balance < 0) {
+        return false;
+      }
+    }
+    return balance === 0;
+  };
+
+  generateAll('', n);
+  return result;
+};
+```
+
+### 回溯
+
+* 开始时左右括号数量都为 n（即需要生成的括号对数），生成第一个字符为左括号 "("。
+* 当左括号数量大于 0 时，可以生成一个左括号 "("，然后继续递归调用。
+* 当右括号数量大于左括号数量时，可以生成一个右括号 ")"，然后继续递归调用。
+* 当左右括号数量都为 0 时，将当前字符串加入结果集。
+
+```JS
+/**
+ * @param {number} n
+ * @return {string[]}
+ */
+var generateParenthesis = function(n) {
+  const result = [];
+
+  const backtrack = (left, right, str) => {
+    // 如果左右括号数量都为 0，则将当前字符串加入结果集
+    if (left === 0 && right === 0) {
+      result.push(str);
+      return;
+    }
+
+    // 左括号数量大于 0，可以继续生成左括号
+    if (left > 0) {
+      backtrack(left - 1, right, str + '(');
+    }
+
+    // 右括号数量大于左括号数量，可以继续生成右括号
+    if (right > left) {
+      backtrack(left, right - 1, str + ')');
+    }
+  };
+
+  backtrack(n, n, ''); // 开始回溯
+
+  return result;
+};
+```
+
+:::

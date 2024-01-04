@@ -24,7 +24,7 @@ const sidebarConfig = {
         { text: '选择排序', link: '/algorithm/sort/selection' },
         { text: '插入排序', link: '/algorithm/sort/insertion' },
         { text: '归并排序', link: '/algorithm/sort/merge' },
-        { text: '快速排序', link: '/algorithm/sort/quick' },
+        { text: '⭐快速排序', link: '/algorithm/sort/quick' },
         { text: '希尔排序', link: '/algorithm/sort/shellsort' },
         { text: '堆排序', link: '/algorithm/sort/heap' },
         { text: '基数排序', link: '/algorithm/sort/radix' },

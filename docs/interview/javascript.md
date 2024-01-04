@@ -226,7 +226,7 @@ const x = new 构造函数() // 会导致 x.__?????__ === 构造函数.prototype
 ## 闭包 :star:
 
 ::: details
-闭包（Closure）是指函数和其周围的状态（lexical environment，词法环境）的组合。它包含了两部分：
+闭包让开发者可以从内部函数访问外部函数的作用域。它包含了两部分：
 
 1. **函数：** 闭包是一个函数。
 2. **环境：** 闭包是这个函数被创建时所处的词法环境。这个环境中包含了函数被创建时的所有局部变量。
@@ -244,18 +244,15 @@ const x = new 构造函数() // 会导致 x.__?????__ === 构造函数.prototype
 ### 示例：
 
 ```javascript
-function outerFunction() {
-  let outerVar = 'I am outer';
-
-  function innerFunction() {
-    console.log(outerVar); // 可以访问外部函数中的 outerVar 变量
+function init() {
+  var name = "I am outer"; // name 是一个被 init 创建的局部变量
+  function displayName() {
+    // displayName() 是内部函数，一个闭包
+    console.log(name); // 使用了父函数中声明的变量
   }
-
-  return innerFunction;
+  displayName();
 }
-
-const closureFunc = outerFunction();
-closureFunc(); // 输出：I am outer
+init(); // 输出：I am outer
 ```
 
 在这个例子中， `innerFunction` 就是一个闭包，它可以访问外部函数 `outerFunction` 中的 `outerVar` 变量，即使 `outerFunction` 已经执行完毕。闭包的特性使得内部函数仍然可以访问其词法作用域中的变量，从而形成了闭包。
