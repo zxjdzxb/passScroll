@@ -1202,7 +1202,7 @@ var search = function(nums, target) {
  * 但是最坏情况下也只是将整个矩阵变成0，因此相当于最坏遍历矩阵2次
  * 空间复杂度：0(nm)，最坏情况下整个矩阵都是1，递归栈深度为
 
-![图解](image-2.png)
+![图解](./img/numberOfIslands.png)
 
 ```JS
 /**
