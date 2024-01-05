@@ -1333,3 +1333,174 @@ var generateParenthesis = function(n) {
 ```
 
 :::
+
+## 合并两个有序链表
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/merge-two-sorted-lists/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/merge-two-sorted-lists/solution/by-hovinghuang-zg0e/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/d8b6b4358f774294a89de2a6ac4d9337)
+ * [牛客网 题解](https://blog.nowcoder.net/n/ac49c082300d434898511f8c26bdc26d)
+::: details
+
+### 递归
+
+ * （1）每次比较两个链表当前结点的值，然后取较小值的链表指针往后，另一个不变送入递归中。
+ * （2）递归回来的结果我们要加在当前较小值的结点后面，相当于不断在较小值后面添加结点。
+ * （3）递归的终止是两个链表为空。
+ * 时间复杂度: O(n)，最坏相当于遍历两个链表每个结点一次
+ * 空间复杂度: O(n), 递归栈长度最大为 n
+
+```JS
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} list1
+ * @param {ListNode} list2
+ * @return {ListNode}
+ */
+var mergeTwoLists = function(l1, l2) {
+  if (l1 === null) {
+    return l2;
+  }
+  if (l2 === null) {
+    return l1;
+  }
+  if (l1.val < l2.val) {
+    l1.next = mergeTwoLists(l1.next, l2);
+    return l1;
+  } else {
+    l2.next = mergeTwoLists(l1, l2.next);
+    return l2;
+  }
+};
+```
+
+### 迭代
+
+ * （1）新建一个空的表头后面连接两个链表排序后的结点。
+ * （2）遍历两个链表都不为空的情况，取较小值添加在新的链表后面，每次只把被添加的链表的指针后移。
+ * （3）遍历到最后肯定有一个链表还有剩余的结点，它们的值将大于前面所有的，直接连在新的链表后面即可。
+ * 时间复杂度: O(n)，最坏情况遍历2 * n个结点
+ * 空间复杂度: 0(1)，无额外空间使用，新建的链表属于返回必要空间
+
+```JS
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} list1
+ * @param {ListNode} list2
+ * @return {ListNode}
+ */
+var mergeTwoLists = function(l1, l2) {
+  const dummy = new ListNode(-1); // 创建一个哑节点作为合并后链表的起始节点
+  let current = dummy; // 使用指针 current 作为遍历新链表的指针
+
+  while (l1 !== null && l2 !== null) {
+    if (l1.val <= l2.val) {
+      current.next = l1; // 将较小值节点连接到新链表
+      l1 = l1.next; // 移动 l1 指针
+    } else {
+      current.next = l2; // 将较小值节点连接到新链表
+      l2 = l2.next; // 移动 l2 指针
+    }
+    current = current.next; // 更新当前指针位置
+  }
+  // 处理剩余节点
+  if (l1 !== null) {
+    current.next = l1;
+  } else {
+    current.next = l2;
+  }
+  return dummy.next; // 返回合并后链表的起始节点的下一个节点（跳过哑节点）
+};
+```
+
+:::
+
+## 螺旋矩阵
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/spiral-matrix/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/spiral-matrix/solution/luo-xuan-ju-zhen-by-hovinghuang-i1if/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/7edf70f2d29c4b599693dc3aaeea1d31)
+ * [牛客网 题解](https://blog.nowcoder.net/n/de3f4f8d4f504bc2b3b55ecde6295257)
+::: details
+
+### 思路：
+
+1. **初始化边界指针：** 设置 `top`,    `bottom`,    `left`,  `right` 四个边界指针，分别表示当前螺旋遍历的上下左右边界。
+2. **按照螺旋顺序遍历矩阵：** 通过模拟向右、向下、向左、向上的顺序依次遍历矩阵，并将遍历到的元素添加到结果数组中。
+   - 向右遍历：从 `left` 到 `right` ， `top` 增加 1。
+   - 向下遍历：从 `top` 到 `bottom` ， `right` 减少 1。
+   - 向左遍历：如果 `top` 小于等于 `bottom` ，从 `right` 到 `left` ， `bottom` 减少 1。
+   - 向上遍历：如果 `left` 小于等于 `right` ，从 `bottom` 到 `top` ， `left` 增加 1。
+3. **返回结果：** 返回遍历得到的结果数组。
+
+#### 复杂度分析：
+
+* 时间复杂度：O(m * n)，其中 m 是矩阵的行数，n 是矩阵的列数。遍历矩阵中的每个元素。
+* 空间复杂度：O(1)，除了结果数组外，不需要额外的空间。
+
+```JS
+/**
+ * @param {number[][]} matrix
+ * @return {number[]}
+ */
+var spiralOrder = function(matrix) {
+  if (matrix.length === 0 || matrix[0].length === 0) {
+    return [];
+  }
+
+  const rows = matrix.length;
+  const cols = matrix[0].length;
+  const result = [];
+
+  let top = 0,
+    bottom = rows - 1;
+  let left = 0,
+    right = cols - 1;
+
+  while (top <= bottom && left <= right) {
+    // 向右移动，添加上行元素
+    for (let i = left; i <= right; i++) {
+      result.push(matrix[top][i]);
+    }
+    top++;
+
+    // 向下移动，添加右列元素
+    for (let i = top; i <= bottom; i++) {
+      result.push(matrix[i][right]);
+    }
+    right--;
+
+    // 向左移动，添加下行元素
+    if (top <= bottom) {
+      for (let i = right; i >= left; i--) {
+        result.push(matrix[bottom][i]);
+      }
+      bottom--;
+    }
+
+    // 向上移动，添加左列元素
+    if (left <= right) {
+      for (let i = bottom; i >= top; i--) {
+        result.push(matrix[i][left]);
+      }
+      left++;
+    }
+  }
+
+  return result;
+};
+```
+
+:::
