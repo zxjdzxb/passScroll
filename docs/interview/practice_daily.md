@@ -1226,6 +1226,18 @@ var numIslands = function(grid) {
     if (j - 1 >= 0 && grid[i][j - 1] === '1') dfs(i, j - 1);
     if (j + 1 < cols && grid[i][j + 1] === '1') dfs(i, j + 1);
   };
+  //  const dfs = (i, j) => {
+  //     if (i < 0 || i >= rows || j < 0 || j >= cols || grid[i][j] === '0') {
+  //         return;
+  //     }
+
+  //     grid[i][j] = '0'; // Mark as visited to avoid revisiting
+
+  //     dfs(i - 1, j);
+  //     dfs(i + 1, j);
+  //     dfs(i, j - 1);
+  //     dfs(i, j + 1);
+  // };
 
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
@@ -1437,7 +1449,7 @@ var mergeTwoLists = function(l1, l2) {
 
 ### 思路：
 
-1. **初始化边界指针：** 设置 `top`,                                           `bottom`,                                           `left`,  `right` 四个边界指针，分别表示当前螺旋遍历的上下左右边界。
+1. **初始化边界指针：** 设置 `top`,                                                            `bottom`,                                                            `left`,  `right` 四个边界指针，分别表示当前螺旋遍历的上下左右边界。
 2. **按照螺旋顺序遍历矩阵：** 通过模拟向右、向下、向左、向上的顺序依次遍历矩阵，并将遍历到的元素添加到结果数组中。
    - 向右遍历：从 `left` 到 `right` ， `top` 增加 1。
    - 向下遍历：从 `top` 到 `bottom` ， `right` 减少 1。
@@ -1714,6 +1726,121 @@ var maxDepth = function(root) {
   return depth;
 
 };
+```
+
+:::
+
+## 岛屿的最大面积
+
+* [leetcode 题目](https://leetcode.cn/problems/max-area-of-island/description/)
+
+::: details
+
+### 深度优先遍历
+
+"岛屿的最大面积"问题可以通过深度优先搜索（DFS）解决。算法的基本思路是遍历整个网格，在发现岛屿（即'1'）时，对其进行DFS，计算连通的岛屿面积，并记录最大的面积。
+
+1. 遍历整个网格，对于每个遇到的岛屿（'1'），以其为起点进行DFS。
+2. 在DFS中，从当前岛屿开始，沿着上下左右四个方向探索，如果邻居也是岛屿，则递归地计算其面积，并将该岛屿标记为已访问（置为'0'）以避免重复计算。
+3. 返回DFS过程中计算的岛屿面积，并更新最大面积值。
+
+#### 复杂度：
+
+* 时间复杂度：对于一个大小为 M × N 的网格，最坏情况下，需要遍历整个网格来找到所有岛屿并计算其面积。因此时间复杂度为 O(M*N)，其中 M 为行数，N 为列数。
+* 空间复杂度：DFS过程中的递归调用会占用栈空间，最大递归深度取决于岛屿的大小。在最坏情况下，整个网格都是一个岛屿，因此空间复杂度为 O(M*N)。
+
+```JS
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var maxAreaOfIsland = function(grid) {
+  if (grid === null || grid.length === 0) {
+    return 0;
+  }
+  const rows = grid.length;
+  const cols = grid[0].length;
+  let maxArea = 0;
+
+  const dfs = (grid, i, j) => {
+    if (i < 0 || i >= rows || j < 0 || j >= cols || grid[i][j] === 0) {
+      return 0;
+    }
+
+    grid[i][j] = 0; // Mark as visited to avoid revisiting
+    let area = 1;
+
+    area += dfs(grid, i - 1, j);
+    area += dfs(grid, i + 1, j);
+    area += dfs(grid, i, j - 1);
+    area += dfs(grid, i, j + 1);
+
+    return area;
+  };
+
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if (grid[i][j] === 1) {
+        maxArea = Math.max(maxArea, dfs(grid, i, j));
+      }
+    }
+  }
+
+  return maxArea;
+};
+```
+
+:::
+
+## LRU缓存机制
+
+* [leetcode题目](https://leetcode.cn/problems/lru-cache/description/)
+::: details
+
+### 哈希表+双向链表
+
+LRU（Least Recently Used）缓存机制是一种常见的缓存替换算法，用于管理缓存中的数据项。它基于最近使用原则，如果数据最近被访问过，则认为它是“热点数据”，因此更可能在将来被访问。LRU缓存会移除最近最少使用的数据项，以为新的数据项腾出空间。
+
+实现LRU缓存机制的主要思想是使用哈希表和双向链表：
+
+* 哈希表用于快速定位数据项，通过键来获取对应的值。
+* 双向链表用于按访问顺序存储数据项，使得在O(1)时间内实现数据项的插入和删除。
+
+基本操作包括：
+
+1. 获取数据项：当从缓存中获取数据时，如果数据项存在，则将其从链表中删除并移到链表头部，表示最近被访问过。
+2. 插入数据项：当向缓存中插入新数据时，若缓存已满，则移除链表尾部数据项，并将新数据插入链表头部。
+3. 删除数据项：当缓存中的数据项达到上限时，移除链表尾部的数据项。
+
+```JS
+class LRUCache {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.cache = new Map(); // Map used for O(1) access
+  }
+
+  get(key) {
+    if (this.cache.has(key)) {
+      const value = this.cache.get(key);
+      // Delete and re-insert the key-value pair to update its access position
+      this.cache.delete(key);
+      this.cache.set(key, value);
+      return value;
+    }
+    return -1; // Return -1 if key doesn't exist
+  }
+
+  put(key, value) {
+    if (this.cache.has(key)) {
+      this.cache.delete(key); // If key exists, delete it to update its access position
+    } else if (this.cache.size >= this.capacity) {
+      // If cache is full, remove the least recently used item (first entry)
+      const firstKey = this.cache.keys().next().value;
+      this.cache.delete(firstKey);
+    }
+    this.cache.set(key, value); // Insert the key-value pair
+  }
+}
 ```
 
 :::
