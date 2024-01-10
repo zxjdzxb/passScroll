@@ -1437,7 +1437,7 @@ var mergeTwoLists = function(l1, l2) {
 
 ### 思路：
 
-1. **初始化边界指针：** 设置 `top`,    `bottom`,    `left`,  `right` 四个边界指针，分别表示当前螺旋遍历的上下左右边界。
+1. **初始化边界指针：** 设置 `top`,                                           `bottom`,                                           `left`,  `right` 四个边界指针，分别表示当前螺旋遍历的上下左右边界。
 2. **按照螺旋顺序遍历矩阵：** 通过模拟向右、向下、向左、向上的顺序依次遍历矩阵，并将遍历到的元素添加到结果数组中。
    - 向右遍历：从 `left` 到 `right` ， `top` 增加 1。
    - 向下遍历：从 `top` 到 `bottom` ， `right` 减少 1。
@@ -1500,6 +1500,219 @@ var spiralOrder = function(matrix) {
   }
 
   return result;
+};
+```
+
+:::
+
+## 最长递增子序列
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/longest-increasing-subsequence/)
+ * [leetcode 题解](https://leetcode-cn.com/problems/longest-increasing-subsequence/solution/by-hovinghuang-thvh/)
+ * [牛客网 题目](https://www.nowcoder.com/practice/5164f38b67f846fb8699e9352695cd2f)
+ * [牛客网 题解](https://blog.nowcoder.net/n/df338bdebd0e4101b41b1978f6f3f98a)
+::: details
+
+### 二分查找
+
+* 二分查找方法的基本思路是利用辅助数组来存储递增子序列，不断更新辅助数组的值，以求得最长递增子序列的长度
+ * 时间复杂度：O(nlogn)
+ * 空间复杂度：O(n)
+
+```JS
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var lengthOfLIS = function(nums) {
+  const tails = []; // 用来存储递增子序列的辅助数组
+  let len = 0; // 当前递增子序列的长度
+
+  for (let num of nums) {
+    let left = 0,
+      right = len; // 使用二分查找找到当前数字在辅助数组中的插入位置
+
+    while (left < right) {
+      const mid = Math.floor((left + right) / 2);
+      if (tails[mid] < num) {
+        left = mid + 1;
+      } else {
+        right = mid;
+      }
+    }
+
+    tails[left] = num; // 更新辅助数组的值
+
+    if (left === len) {
+      len++; // 如果当前数字大于辅助数组中所有数字，递增子序列长度加一
+    }
+  }
+
+  return len;
+};
+```
+
+### 动态规划
+
+* 动态规划的思路是创建一个数组 dp 来存储以每个元素结尾的最长递增子序列的长度。
+* 对于每个位置的数字，遍历其之前的所有位置
+* 如果当前数字大于前面的某个数字，并且以该数字结尾的递增子序列长度比当前位置的递增子序列长度要长，则更新当前位置的递增子序列长度为更长的长度。
+ * 时间复杂度：O(n^2)，其中 n 为数组 nums 的长度。
+ * 空间复杂度：O(n)，需要额外使用长度为 n 的 dp 数组。
+
+```JS
+var lengthOfLIS = function(nums) {
+  if (nums.length === 0) {
+    return 0;
+  }
+  const dp = new Array(nums.length).fill(1); // 创建并初始化 dp 数组，每个位置初始为 1
+  for (let i = 1; i < nums.length; i++) {
+    // i与i前面的元素比较
+    for (let j = 0; j < i; j++) {
+      if (nums[i] > nums[j]) {
+        dp[i] = Math.max(dp[i], dp[j] + 1); // 更新当前位置的递增子序列长度
+      }
+    }
+  }
+
+  return Math.max(...dp); // 返回 dp 数组中的最大值
+};
+```
+
+:::
+
+## 二叉树的中序遍历
+
+* [leetcode 题目](https://leetcode.cn/problems/binary-tree-inorder-traversal/description/)
+::: details
+* 首先我们需要了解什么是二叉树的中序遍历：按照访问左子树——根节点——右子树的方式遍历这棵树，而在访问左子树或者右子树的时候我们按照同样的方式遍历，直到遍历完整棵树。
+
+### 递归
+
+* 时间复杂度：O(n)，其中 n 为二叉树节点的个数。二叉树的遍历中每个节点会被访问一次且只会被访问一次。
+* 空间复杂度：O(n)。空间复杂度取决于递归的栈深度，而栈深度在二叉树为一条链的情况下会达到 O(n) 的级别。
+
+```JS
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+const inorderTraversal = (root) => {
+  const res = [];
+  const inorder = (root) => {
+    if (root == null) {
+      return;
+    }
+    inorder(root.left); // 先递归左子树
+    res.push(root.val); // 将当前节点值推入res
+    inorder(root.right); // 再递归右子树
+  };
+  inorder(root);
+  return res;
+};
+```
+
+### 迭代
+
+* 如果当前节点存在（不为 null），将当前节点及其所有左子节点入栈，直至当前节点为空。
+* 弹出栈顶节点，并将其值加入结果数组。
+* 将当前节点指向其右子节点，继续进行遍历。
+
+```JS
+var inorderTraversal = function(root) {
+  const res = [];
+  const stk = [];
+  while (root || stk.length) {
+    while (root) {
+      stk.push(root); // 将当前节点及其左子节点入栈
+      root = root.left; // 移动到左子节点
+    }
+    root = stk.pop(); // 弹出栈顶节点（当前的最左节点）
+    res.push(root.val); // 访问当前节点的值
+    root = root.right; // 移动到右子节点
+  }
+  return res;
+};
+```
+
+:::
+
+## 二叉树的最大深度
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
+::: details
+
+### 深度优先搜索（DFS）
+
+* 使用递归来遍历二叉树的左右子树，并返回左右子树中最大深度加1，以得到整棵树的最大深度
+* 时间复杂度：O(n)，其中 n 为二叉树节点的个数。每个节点在递归中只被遍历一次。
+* 空间复杂度：O(height)，其中 height 表示二叉树的高度。递归函数需要栈空间，而栈空间取决于递归的深度，因此空间复杂度等价于二叉树的高度。
+
+```JS
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var maxDepth = function(root) {
+  if (root === null) {
+    return 0;
+  }
+
+  const leftDepth = maxDepth(root.left);
+  const rightDepth = maxDepth(root.right);
+
+  return Math.max(leftDepth, rightDepth) + 1;
+
+};
+```
+
+### 广度优先搜索（BFS）
+
+* 使用一个队列，每次迭代时将同一层的节点依次加入队列，直到遍历完整棵树，得到最大深度。
+* 时间复杂度：O(n)，其中 n 为二叉树的节点个数。与方法一同样的分析，每个节点只会被访问一次。
+* 空间复杂度：此方法空间的消耗取决于队列存储的元素数量，其在最坏情况下会达到 O(n)。
+
+```JS
+var maxDepth = function(root) {
+  if (root === null) {
+    return 0;
+  }
+
+  let depth = 0;
+  const queue = [root];
+
+  while (queue.length !== 0) {
+    const size = queue.length;
+    for (let i = 0; i < size; i++) {
+      const node = queue.shift();
+      if (node.left) {
+        queue.push(node.left);
+      }
+      if (node.right) {
+        queue.push(node.right);
+      }
+    }
+    depth++;
+  }
+
+  return depth;
+
 };
 ```
 
