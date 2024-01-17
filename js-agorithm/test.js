@@ -1,25 +1,52 @@
 /**
- * @param {number[]} nums
- * @return {number}
+ * @param {number} capacity
  */
-var lengthOfLIS = function (nums) {
-  if (nums.length === 0) {
-    return 0
+class LRUCache {
+  constructor(capacity) {
+    this.capacity = capacity
+    this.cache = new Map() // Map used for O(1) access
   }
 
-  const dp = new Array(nums.length).fill(1) // 创建并初始化 dp 数组，每个位置初始为 1
-  console.log(dp)
-
-  for (let i = 1; i < nums.length; i++) {
-    for (let j = 0; j < i; j++) {
-      if (nums[i] > nums[j]) {
-        dp[i] = Math.max(dp[i], dp[j] + 1) // 更新当前位置的递增子序列长度
-      }
-      console.log(dp)
+  get(key) {
+    if (this.cache.has(key)) {
+      const value = this.cache.get(key)
+      // Delete and re-insert the key-value pair to update its access position
+      this.cache.delete(key)
+      this.cache.set(key, value)
+      return value
     }
+    return -1 // Return -1 if key doesn't exist
   }
 
-  return Math.max(...dp) // 返回 dp 数组中的最大值
+  put(key, value) {
+    if (this.cache.has(key)) {
+      this.cache.delete(key) // If key exists, delete it to update its access position
+    } else if (this.cache.size >= this.capacity) {
+      // If cache is full, remove the least recently used item (first entry)
+      const firstKey = this.cache.keys().next().value
+      this.cache.delete(firstKey)
+    }
+    this.cache.set(key, value) // Insert the key-value pair
+  }
 }
 
-console.log(lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18])) // 输出：4
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * var obj = new LRUCache(capacity)
+ * var param_1 = obj.get(key)
+ * obj.put(key,value)
+ */
+// Create an LRU Cache with a capacity of 2
+const lruCache = new LRUCache(2)
+
+// Perform operations
+// lruCache.put(1, 1) // Cache: {1=1}
+// lruCache.put(2, 2);   // Cache: {1=1, 2=2}
+// lruCache.get(1) // Return 1 (accessing 1), Cache: {2=2, 1=1}
+// lruCache.put(3, 3);   // Cache is full, remove the least recently used item (2), then add 3, Cache: {1=1, 3=3}
+// lruCache.get(2);      // Return -1 (2 is no longer in the cache)
+// lruCache.put(4, 4);   // Cache is full, remove the least recently used item (1), then add 4, Cache: {3=3, 4=4}
+// lruCache.get(1);      // Return -1 (1 is no longer in the cache)
+// lruCache.get(3);      // Return 3 (accessing 3), Cache: {4=4, 3=3}
+// lruCache.get(4);      // Return 4 (accessing 4), Cache: {3=3, 4=4}
+console.log(lruCache.get(1))

@@ -1,6 +1,6 @@
 # JavaScript
 
-## JS 的数据类型有哪些？
+## :star: JS 的数据类型有哪些？
 
 ::: details
 纯记忆题，答案有 8 个词，建议背诵 10 次。
@@ -161,7 +161,7 @@ NaN === NaN; // false
 `Object.is()` 被设计为更严格的相等比较，特别处理了一些 JavaScript 中存在的奇异行为，比如 NaN 和 +0/-0 的比较。
 :::
 
-## 原型链是什么？
+## :star: 原型链是什么？
 
 ::: details
 *   原型：每一个 JavaScript 对象（null 除外）在创建的时候就会与之关联另一个对象，这个对象就是我们所说的原型，每一个对象都会从原型"继承"属性，其实就是 `prototype` 对象。\
@@ -223,7 +223,7 @@ const x = new 构造函数() // 会导致 x.__?????__ === 构造函数.prototype
 [JS 中 __proto__ 和 prototype 存在的意义是什么？](https://www.zhihu.com/question/56770432/answer/315342130)
 :::
 
-## 闭包 :star:
+## :star: 闭包
 
 ::: details
 闭包让开发者可以从内部函数访问外部函数的作用域。它包含了两部分：
@@ -316,7 +316,7 @@ console.log(deepCopy.b.c); // 输出: 2（因为进行了深拷贝，所以修�
 
 :::
 
-## 谈谈 This 对象的理解。
+## :star: 谈谈 This 对象的理解。
 
 ::: details
 this 是执行上下文中的一个属性，它指向最后一次调用这个方法的对象。在实际开发中，this 的指向可以通过四种调用模

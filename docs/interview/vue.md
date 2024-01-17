@@ -291,7 +291,7 @@ Vue 提供了两种不同的 API 来编写组件逻辑：Options API 和 Composi
 在实际开发中，可以根据项目的需求和复杂度选择合适的 API。对于小型简单的项目，Options API 可能更为合适；对于大型复杂的项目，Composition API 则更具优势。此外，Vue 3 也允许混合使用两种 API，根据具体情况灵活选择。
 :::
 
-## 组件通信
+## :star: 组件通信
 
 ::: details
 在 Vue 中，组件之间可以通过多种方式进行通信，包括 props 和事件、Vuex 状态管理、$emit / $on 等。
@@ -339,7 +339,7 @@ Vue 提供了两种不同的 API 来编写组件逻辑：Options API 和 Composi
 在实际应用中，根据不同的场景和需求，选择合适的通信方式来实现组件之间的通信是非常重要的。
 :::
 
-## VueRouter 用过吗？怎么理解？
+## :star: VueRouter 用过吗？怎么理解？
 
 ::: details
 是的，VueRouter 是 Vue.js 官方的路由管理器，用于构建单页面应用（SPA）。它允许你通过简单的配置定义路由，将不同 URL 对应到 Vue 组件，实现页面间的切换和跳转。

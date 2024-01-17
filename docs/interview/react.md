@@ -61,7 +61,7 @@ React，用于构建用户界面的 JavaScript 库，只提供了 UI 层面的�
 从 React 17 开始，一些生命周期方法被标记为不推荐使用，React 建议使用函数式组件和 Hooks 来替代传统的生命周期方法。
 :::
 
-## 虚拟 DOM 的原理是什么？
+## :star: 虚拟 DOM 的原理是什么？
 
 ::: details
 
@@ -138,7 +138,7 @@ React，用于构建用户界面的 JavaScript 库，只提供了 UI 层面的�
 React 保证了更新的一致性和性能，通过批量处理 `setState` 来提高性能并避免不必要的重复渲染。因此，通常情况下 `setState` 是异步执行的，更新会在合适的时机批量进行。
 :::
 
-## 组件通信
+## :star: 组件通信
 
 ::: details
  父子组件的通信方式？
@@ -330,31 +330,21 @@ useMemo 用来缓存函数执行的结果。如每次渲染时都要执行一段
 
 ::: details
 
-1.  模拟 componentDidMount
+ * componentDidMount、componentDidUpdate 和 componentWillUnmount
 
 <!---->
 
 ```js
-  // componentDidUpdate
-  useEffect(() => {
-    if (first.current === true) {
-      return
-    }
-    console.log('did update')
-  })
-```
+useEffect(() => {
+  // componentDidMount 和 componentDidUpdate
+  console.log('Component did mount or update');
 
-2.  模拟 componentDidUpdate和componentWillUnmount
-
-```js
-  // componentDidMount
-  useEffect(() => {
-    console.log('did mount')
-    first.current = false
-    return () => {
-      console.log('did unmount')
-    }
-  }, [])
+  return () => {
+    // componentWillUnmount
+    console.log('Component will unmount');
+    // 可在此处清理副作用，如取消订阅或清除定时器
+  };
+}, []);
 ```
 
 <!---->

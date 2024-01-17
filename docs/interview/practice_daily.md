@@ -2,13 +2,106 @@
 
 [根据大佬这个仓库](https://github.com/hovinghuang/fe-agorithm-interview)来准备算法面试
 
-## 无重复字符的最长子串
+## 字符串相加（大数加法）:star:
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/add-strings/)
+
+::: details
+* 创建指针 *i* 指向 nums1 末位数字，*j* 指向 nums2 末位数字。
+* *i*, *j* 数字相加，用进位就用 carry 来记录进位值，无则为 0。
+* 若产生进位，则当前数字为 (*i* + *j*)%10 的值。
+* 若遍历过程中，nums1 或 nums2 当前已无数字，则用 0 补位来计算。
+
+```JS
+/**
+ * @param {string} num1
+ * @param {string} num2
+ * @return {string}
+ */
+var addStrings = function(num1, num2) {
+  let i = num1.length - 1,
+    j = num2.length - 1,
+    carry = 0,
+    ans = [];
+  while (i >= 0 || j >= 0 || carry !== 0) {
+    let c1 = i >= 0 ? num1[i] - '0' : 0,
+      c2 = j >= 0 ? num2[j] - '0' : 0;
+    let sum = c1 + c2 + carry;
+    ans.unshift(sum % 10);
+    carry = Math.floor(sum / 10);
+    i--;
+    j--;
+  }
+  return ans.join('');
+}
+```
+
+:::
+
+## 两数之和 :star:
+
+ * [leetcode 题目](https://leetcode-cn.com/problems/two-sum/)
+
+::: details
+
+### 双循环
+
+* 第一次接触题目，首先肯定是想到暴力解法，通过双循环遍历数组，找nums[i] + nums[j] === target。
+* 时间复杂度: O(n^2)
+* 空间复杂度: O(1)
+
+```JS
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+  let res = []
+  for (let i = 0, len = nums.length; i < len; i++) {
+    let dif = target - nums[i]
+    // 因为同一元素不允许重复出现，所以从i的下一位开始遍历
+    for (let j = i + 1; j < len; j++) {
+      if (nums[j] === dif) {
+        res = [i, j];
+        return res
+      }
+    }
+  }
+  // 所有样例都是有返回结果的，这里无所谓
+  return res;
+
+};
+```
+
+### 哈希表
+
+ * 思路：遍历的同时借助哈希表，记录值和下标
+ * 时间复杂度：O(n)，最多遍历数组一遍，每次查询哈希表都是O(1)
+ * 空间复杂度：O(n)，最坏情况下找到数组结尾才找到，其他都加入哈希表，哈希表最长 n - 1
+
+```JS
+var twoSum = function(nums, target) {
+  let map = new Map();
+  for (let i = 0, len = nums.length; i < len; i++) {
+    let dif = target - nums[i]
+    if (map.has(dif)) {
+      return [map.get(dif), i];
+    } else {
+      map.set(nums[i], i);
+    }
+  }
+  return [];
+};
+```
+
+:::
+
+## 无重复字符的最长子串 :star:
 
 * 题目名称：无重复字符的最长子串（类似题目：最长无重复子数组）
 * [leetcode 题目](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/)
-* [leetcode 题解](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/by-hovinghuang-qugo/)
-* [牛客网 题目](https://www.nowcoder.com/practice/b56799ebfd684fb394bd315e89324fb4?tpId=295&tqId=1008889&ru=/exam/oj&qru=/ta/format-top101/question-ranking&sourceUrl=%2Fexam%2Foj%3Ftab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D295)
-* [牛客网 题解](https://blog.nowcoder.net/n/fce41b44190449f18c605a0a41db9c78)
+
 ::: details
 
 #### 解法一：滑动窗口（reduce累加器）
@@ -151,43 +244,6 @@ export function merge(A: number[], m: number, B: number[], n: number) {
 
 :::
 
-## 字符串相加（大数加法）
-
- * [leetcode 题目](https://leetcode-cn.com/problems/add-strings/)
- * [leetcode 题解](https://leetcode-cn.com/problems/add-strings/solution/by-hovinghuang-l59r/)
- * [牛客网 题目](https://www.nowcoder.com/practice/11ae12e8c6fe48f883cad618c2e81475?tpId=295&tqId=1061819&ru=/exam/oj&qru=/ta/format-top101/question-ranking&sourceUrl=%2Fexam%2Foj%3Ftab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D295)
- * [牛客网 题解](https://blog.nowcoder.net/n/1027295c5c8d44f7bbfe2b276e5adf20)
-::: details
-* 创建指针 *i* 指向 nums1 末位数字，*j* 指向 nums2 末位数字。
-* *i*, *j* 数字相加，用进位就用 carry 来记录进位值，无则为 0。
-* 若产生进位，则当前数字为 (*i* + *j*)%10 的值。
-* 若遍历过程中，nums1 或 nums2 当前已无数字，则用 0 补位来计算。
-
-```JS
-/**
- * @param {string} num1
- * @param {string} num2
- * @return {string}
- */
-var addStrings = function(num1, num2) {
-  let i = num1.length - 1,
-    j = num2.length - 1,
-    carry = 0,
-    ans = [];
-  while (i >= 0 || j >= 0 || carry !== 0) {
-    let c1 = i >= 0 ? num1[i] - '0' : 0,
-      c2 = j >= 0 ? num2[j] - '0' : 0;
-    let sum = c1 + c2 + carry;
-    ans.unshift(sum % 10);
-    carry = Math.floor(sum / 10);
-    i--;
-    j--;
-  }
-  return ans.join('');
-}
-```
-
-:::
  ## 比较版本号
  * [leetcode 题目](https://leetcode-cn.com/problems/compare-version-numbers/)
  * [leetcode 题解](https://leetcode-cn.com/problems/compare-version-numbers/solution/by-hovinghuang-rmlf/)
@@ -270,68 +326,6 @@ var isValid = function(s) {
   }
   return !stack.length;
 }
-```
-
-:::
-
-## 两数之和
-
- * [leetcode 题目](https://leetcode-cn.com/problems/two-sum/)
- * [leetcode 题解](https://leetcode-cn.com/problems/two-sum/solution/by-hovinghuang-8jqr/)
- * [牛客网 题目](https://www.nowcoder.com/practice/20ef0972485e41019e39543e8e895b7f?tpId=295&tqId=745&ru=/exam/oj&qru=/ta/format-top101/question-ranking&sourceUrl=%2Fexam%2Foj%3Ftab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D295)
- * [牛客网 题解](https://blog.nowcoder.net/n/61a9e5d2ac2f46db9f6f9e324faab016)
-
-::: details
-
-### 双循环
-
-* 第一次接触题目，首先肯定是想到暴力解法，通过双循环遍历数组，找nums[i] + nums[j] === target。
-* 时间复杂度: O(n^2)
-* 空间复杂度: O(1)
-
-```JS
-/**
- * @param {number[]} nums
- * @param {number} target
- * @return {number[]}
- */
-var twoSum = function(nums, target) {
-  let res = []
-  for (let i = 0, len = nums.length; i < len; i++) {
-    let dif = target - nums[i]
-    // 因为同一元素不允许重复出现，所以从i的下一位开始遍历
-    for (let j = i + 1; j < len; j++) {
-      if (nums[j] === dif) {
-        res = [i, j];
-        return res
-      }
-    }
-  }
-  // 所有样例都是有返回结果的，这里无所谓
-  return res;
-
-};
-```
-
-### 哈希表
-
- * 思路：遍历的同时借助哈希表，记录值和下标
- * 时间复杂度：O(n)，最多遍历数组一遍，每次查询哈希表都是O(1)
- * 空间复杂度：O(n)，最坏情况下找到数组结尾才找到，其他都加入哈希表，哈希表最长 n - 1
-
-```JS
-var twoSum = function(nums, target) {
-  let map = new Map();
-  for (let i = 0, len = nums.length; i < len; i++) {
-    let dif = target - nums[i]
-    if (map.has(dif)) {
-      return [map.get(dif), i];
-    } else {
-      map.set(nums[i], i);
-    }
-  }
-  return [];
-};
 ```
 
 :::
@@ -1449,7 +1443,7 @@ var mergeTwoLists = function(l1, l2) {
 
 ### 思路：
 
-1. **初始化边界指针：** 设置 `top`,                                                            `bottom`,                                                            `left`,  `right` 四个边界指针，分别表示当前螺旋遍历的上下左右边界。
+1. **初始化边界指针：** 设置 `top`,                                                                      `bottom`,                                                                      `left`,  `right` 四个边界指针，分别表示当前螺旋遍历的上下左右边界。
 2. **按照螺旋顺序遍历矩阵：** 通过模拟向右、向下、向左、向上的顺序依次遍历矩阵，并将遍历到的元素添加到结果数组中。
    - 向右遍历：从 `left` 到 `right` ， `top` 增加 1。
    - 向下遍历：从 `top` 到 `bottom` ， `right` 减少 1。
@@ -1841,6 +1835,28 @@ class LRUCache {
     this.cache.set(key, value); // Insert the key-value pair
   }
 }
+const lruCache = new LRUCache(2)
+
+// Perform operations
+// lruCache.put(1, 1) // Cache: {1=1}
+// lruCache.put(2, 2);   // Cache: {1=1, 2=2}
+// lruCache.get(1) // Return 1 (accessing 1), Cache: {2=2, 1=1}
+// lruCache.put(3, 3);   // Cache is full, remove the least recently used item (2), then add 3, Cache: {1=1, 3=3}
+// lruCache.get(2);      // Return -1 (2 is no longer in the cache)
+// lruCache.put(4, 4);   // Cache is full, remove the least recently used item (1), then add 4, Cache: {3=3, 4=4}
+// lruCache.get(1);      // Return -1 (1 is no longer in the cache)
+// lruCache.get(3);      // Return 3 (accessing 3), Cache: {4=4, 3=3}
+// lruCache.get(4);      // Return 4 (accessing 4), Cache: {3=3, 4=4}
+// console.log(lruCache.get(1))
 ```
+
+:::
+
+## 零钱兑换
+
+* [leetcode题目](https://leetcode.cn/problems/coin-change/description/)
+::: details
+
+### 动态规划
 
 :::
