@@ -413,6 +413,7 @@ VueRouter 是 Vue.js 开发中不可或缺的一部分，它提供了一种方�
 
 ::: details
 Vue 3.x 带来了许多新的特性和性能方面的提升，其中一些重要的变化和改进包括：
+Vue 3.x 在性能方面进行了大幅度的优化。它引入了新的响应式系统（Proxy），用于替代 Vue 2.x 中的 Object.defineProperty，提高了响应式数据的效率。
 
 ### 1. Composition API（组合式 API）：
 
