@@ -18,7 +18,7 @@ const navConfig = [
   {
     text: '博客分享',
     collapsed: true, // 侧边栏是否收起
-    items: []
+    items: [{ text: 'Flex布局', link: '/blog/flex' }]
   },
   {
     text: '排序算法',
