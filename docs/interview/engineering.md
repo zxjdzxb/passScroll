@@ -37,6 +37,7 @@ Git 是一个常用的版本控制工具，以下是一些常用的 Git 命令�
 * **git reset [file]：** 撤销文件的暂存状态。
 * **git checkout -- [file]：** 恢复文件到最近的提交状态。
 * **git revert [commit]：** 撤销指定提交的修改。
+* **git branch -d [branch-name]：** 删除本地分支
 
 ### 日志和查看：
 

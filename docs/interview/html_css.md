@@ -644,7 +644,7 @@ display:-webkit-box; // 作为弹性伸缩盒子模型显示。
 **怎么解决缺点：** 使用最新的 `display: flow-root` 来触发 BFC 就没有副作用了，但是很多人不知道。
 :::
 
-## 重绘和回流
+## :star: 重绘和回流
 
 ::: details
 

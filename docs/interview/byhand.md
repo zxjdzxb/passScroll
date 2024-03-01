@@ -14,8 +14,8 @@ function throttle(func, delay) {
   let timer;
   return function(...args) {
     if (!timer) {
-      func.apply(this, args);
       timer = setTimeout(() => {
+        func.apply(this, args);
         timer = null;
       }, delay);
     }

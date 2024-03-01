@@ -20,7 +20,7 @@ const sidebarConfig = {
       text: '排序算法',
       collapsed: true, // 侧边栏是否收起
       items: [
-        { text: '冒泡排序', link: '/algorithm/sort/bubble' },
+        { text: '⭐冒泡排序', link: '/algorithm/sort/bubble' },
         { text: '选择排序', link: '/algorithm/sort/selection' },
         { text: '插入排序', link: '/algorithm/sort/insertion' },
         { text: '归并排序', link: '/algorithm/sort/merge' },
