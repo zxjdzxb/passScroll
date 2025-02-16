@@ -3,14 +3,14 @@
 ## :star: 如何理解 HTML 中的语义化标签
 
 ::: details
-* 让人更容易读懂（增加代码可读性）。
-* 让搜索引擎更容易读懂，有助于爬虫抓取更多的有效信息，爬虫依赖于标签来确定上下文和各个关键字的权重（SEO）。
-* 在没有 CSS 样式下，页面也能呈现出很好地内容结构、代码结构。
-1. 是什么：语义化标签是一种写 HTML 标签的方法论/方式。
+1. 是什么：语义化标签是指那些具有明确语义含义的标签,是一种写 HTML 标签的方式。
 2. 怎么做：实现方法是遇到标题就用 h1 到 h6，遇到段落用 p，遇到文章用 article，主要内容用 main，边栏用 aside，导航用 nav……（就是找到中文对应的英文）
-3. 解决了什么问题：明确了 HTML 的书写规范
+3. 解决了什么问题:
+* 增加代码可读性和可维护性。
+* 让搜索引擎更容易读懂，有助于爬虫抓取更多的有效信息，爬虫依赖于标签来确定上下文和各个关键字的权重（有利于搜索引擎优化（SEO））。
+* 在没有 CSS 样式下，页面也能呈现出很好地内容结构、代码结构。
 :::
-总结：「是什么、怎么做、解决了什么问题、优点是、缺点是、怎么解决缺点」
+总结：「是什么、怎么做、解决了什么问题」
 
 ## src和href的区别
 
@@ -58,7 +58,7 @@ HTML5 带来了许多更新和新功能，让 Web 开发变得更强大和灵活
    - `<video>` 和 `<audio>` 标签的引入，使得在网页中嵌入视频和音频变得更容易。支持直接在页面中播放视频和音频内容，不再依赖第三方插件。
 3. **Canvas 和 SVG**：
    - `<canvas>` 标签提供了一个用于通过 JavaScript 进行绘图的元素，适用于实时图形生成。SVG（可伸缩矢量图形）则允许使用 XML 描述图形。
-4. **表单控件**：
+4. **表单元素增强**：
    - 引入了新的表单元素和属性，如日期选择器 `<input type="date">` 、颜色选择器 `<input type="color">` 、验证属性等，简化了表单设计和用户输入验证。
 5. **本地存储**：
    - 提供了 `localStorage` 和 `sessionStorage` ，允许网页在客户端存储数据，使得离线数据存储和客户端会话管理更为简便。
@@ -69,9 +69,31 @@ HTML5 的这些更新和功能增强，为开发者提供了更多的工具和�
 
 ::: details
 Canvas 和 SVG 都是用于创建图形的技术，但它们有一些重要的区别：
+
 1. **绘图模型**：
-   - **Canvas**：基于位图的绘图模型，它通过 JavaScript 脚本绘制像素。
-   - **SVG**：基于矢量图形的绘图模型，使用 XML 格式描述图形。
+    - **Canvas**：基于位图的绘图模型，它通过 JavaScript 脚本绘制像素。
+
+```html
+
+<canvas id="myCanvas" width="200" height="200"></canvas>
+<script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.rect(50, 50, 100, 100);
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+</script>
+```
+
+- **SVG**：基于矢量图形的绘图模型，使用 XML 格式描述图形。
+
+```html
+
+<svg width="200" height="200">
+    <circle cx="100" cy="100" r="50" fill="blue"/>
+</svg>
+```
 2. **图形渲染**：
    - **Canvas**：绘制的内容是像素化的，一旦绘制完成，就成为静态图像，如果需要交互或者修改，需要重新绘制整个场景。
    - **SVG**：以矢量方式描述图形，因此无论放大缩小都能保持清晰度，也更容易进行动态修改和交互。
@@ -235,7 +257,7 @@ display:-webkit-box; // 作为弹性伸缩盒子模型显示。
 
 ::: details
 实现元素水平垂直居中的方式：
-*   利用定位+margin:auto
+*   利用定位 + margin:auto
 
 ```CSS
 .parent {
@@ -261,20 +283,20 @@ display:-webkit-box; // 作为弹性伸缩盒子模型显示。
 
 ```CSS
 .parent {
-  height: 600px;
-  border: 1px solid red;
-  position: relative;
+    height: 600px;
+    border: 1px solid red;
+    position: relative;
 }
 
 .child {
-  border: 1px solid green;
-  width: 300px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-left: -150px;
-  height: 100px;
-  margin-top: -50px;
+    border: 1px solid green;
+    width: 300px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -50px;
 }
 ```
 
@@ -307,6 +329,16 @@ display:-webkit-box; // 作为弹性伸缩盒子模型显示。
 ```
 
 *   grid布局
+```CSS
+.parent {
+    display: grid;
+}
+.child {
+    justify-self: center;
+    align-self: center;
+}
+
+```
 :::
 
 ## 两栏布局的实现
@@ -599,20 +631,13 @@ display:-webkit-box; // 作为弹性伸缩盒子模型显示。
 * 或者在父级添加伪元素
 
 ```css
-/* CSS */
-.clearfix::after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
+.float-left {
+    float: left;
 }
 
-.clearfix {
-  *zoom: 1;
+.clr-both {
+    clear: both;
 }
-
-/* IE6、7 专有 */
 ```
 
 :::
@@ -621,24 +646,18 @@ display:-webkit-box; // 作为弹性伸缩盒子模型显示。
 
 :::details
 **是什么：**
-避免回答，直接把 BFC 翻译成中文「**区块格式化上下文，独立的渲染区域**」即可，千万别解释。
+避免回答，直接把 BFC 翻译成中文「**级格式化上下文（Block Formatting Context） ，是一个独立的渲染区域**」即可，千万别解释。
 **怎么做：**
-背诵 BFC 触发条件，虽然 [MDN 的这篇文章](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context) 列举了所有触发条件，但本押题告诉你只用背这几个就行了
-*   浮动元素（元素的 float 不是 none）
-<!---->
-*   绝对定位元素（元素的 position 为 absolute 或 fixed）
-<!---->
-* display 值为：inline-block、table-cell、table-caption、flex等
-<!---->
-*   overflow 值不为 visible 的块元素
+*    根元素：HTML 的根元素 `<html>` 会默认创建BFC。
+*    浮动元素：元素的 `float` 值不为 `none`（比如 `float: left` 或 `float: right`）。
+*    绝对定位元素：元素的 `position` 值为 `absolute` 或 `fixed`。
+*    行内块元素：元素的 `display` 值为 `inline-block`。
+*    表格单元格：元素的 `display` 值为 `table-cell` 等。
 
-<!---->
+
 **解决了什么问题：**
-1.  清除浮动（为什么不用 .clearfix 呢？）
-<!---->
-2.  防止 margin 合并
-
-<!---->
+1. 清除浮动
+2. 防止 margin 合并
 **优点：** 无。
 **缺点：** 有副作用。
 **怎么解决缺点：** 使用最新的 `display: flow-root` 来触发 BFC 就没有副作用了，但是很多人不知道。
@@ -668,18 +687,13 @@ display:-webkit-box; // 作为弹性伸缩盒子模型显示。
  ## 实现一个三角形
  ::: details
 
-```HTML
-<div></div>
-```
-
 ```CSS
-div {
-  width: 0;
-  height: 0;
-  border: 10px solid red;
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-right-color: transparent;
+.triangle {
+    width: 0;
+    height: 0;
+    border-top: 50px solid transparent;
+    border-bottom: 50px solid transparent;
+    border-left: 50px solid red; /* 可以改变颜色 */
 }
 ```
 
