@@ -80,15 +80,47 @@ obj.__proto__ === Array.prototype;
 :::
  ## null和undefined区别
 ::: details
-1. null 是一个关键字，表示一个空值或者不存在的对象。
-2. undefined 是表示未初始化的变量或者对象中不存在的属性值。
-3. null 可以被显式赋值给一个变量，而 undefined 是 JavaScript 中的初始默认值。
-4. 检查一个变量是否为 null 或 undefined 时，最好使用严格相等运算符 === 进行比较，因为它们是不同的值。
+在编程中，尤其是 JavaScript 中，null 和 undefined 是两个经常让人混淆的概念。它们都表示“没有值”，但它们的含义和使用场景有明显的区别。以下是详细的解释：
 
-```JS
-null === undefined; // false
-null == undefined; // true (在使用双等号时，null 和 undefined 是相等的)
+1.
+   null：
+   表示“空值”或“没有对象”。
+   用于主动清空一个变量，或者表示某个对象/引用故意为空。
+   例如：let user = null; 表示“当前没有用户”。
+2.  undefined：
+   表示“未定义”或“缺少值”。
+   是 JavaScript 中的一种默认状态，通常由系统自动分配，表示变量已声明但尚未赋值，或者函数没有返回值。
+    表示变量声明后未初始化，或者试图访问不存在的属性/元素。
+    let name;（声明但未赋值，name 是 undefined）
+    函数没有返回值：function doNothing() {}（调用后返回 undefined）。
+3. 示例对比
+```js
+// null 示例
+let person = null; // 明确表示“没有这个人”
+console.log(person); // 输出: null
+
+// undefined 示例
+let age; // 声明但未赋值
+console.log(age); // 输出: undefined
+
+function sayHello() {
+    // 没有 return 语句
+}
+console.log(sayHello()); // 输出: undefined
+
+let obj = {};
+console.log(obj.someProperty); // 输出: undefined（属性未定义）
 ```
+
+
+
+4. 总 结
+   | 特性        | null       | undefined |
+   |-------------|------------|-----------|
+   | 含义        | 空值，主动置空 | 未定义，默认状态 |
+   | 类型        | object（历史遗留） | undefined |
+   | 赋值方式    | 手动赋值   | 系统自动分配 |
+   | 典型场景    | 清空对象/变量 | 未初始化/无返回值 |
 
 :::
 
@@ -164,59 +196,35 @@ NaN === NaN; // false
 ## :star: 原型链是什么？
 
 ::: details
-*   原型：每一个 JavaScript 对象（null 除外）在创建的时候就会与之关联另一个对象，这个对象就是我们所说的原型，每一个对象都会从原型"继承"属性，其实就是 `prototype` 对象。\
-假设我们有一个数组对象 `a=[]` ，这个 `a` 也会有一个隐藏属性，叫做_proto_这个属性会指向 `Array.prototype`
+*   在 JavaScript 中，每个对象都有一个内部属性 [[Prototype]]（可以通过 __proto__ 访问，或者通过 Object.getPrototypeOf() 获取），它指向该对象的原型。
+    原型本身也是一个对象，因此它也有自己的 [[Prototype]]，这样就形成了一条链式结构，称为原型链。
 
+```js
+// 定义一个构造函数
+function Person(name) {
+  this.name = name;
+}
+
+// 在 Person 的原型上添加一个方法
+Person.prototype.sayHello = function() {
+  console.log(`Hello, I'm ${this.name}`);
+};
+
+// 创建一个实例
+const person1 = new Person("Alice");
+
+console.log(person1.name);       // 输出: "Alice"（对象自身的属性）
+console.log(person1.sayHello()); // 输出: "Hello, I'm Alice"（从原型上继承的方法）
+console.log(person1.toString()); // 输出: "[object Object]"（从 Object.prototype 继承的方法）
 ```
-var a = [];
-a.__proto__ ===  Array.prototype;
-// 用 b表示 Array.prototype
-b._proto_ === Object.prototype
-```
-
-于是就通过隐藏属性 `__proto__` 形成了一个链条：
-
-```
-a ===> Array.prototype ===> Object.prototype
-```
-
-这就是原型链。
-**怎么做：**
-
-看起来只要改写 b 的隐藏属性 `__proto__` 就可以改变 b的原型（链）
-
-```
-const x = Object.create(原型)
-// 或
-const x = new 构造函数() // 会导致 x.__?????__ === 构造函数.prototype
-```
-
-这样一来，a 就既拥有 Array.prototype 里的属性，又拥有 Object.prototype 里的属性。
-**解决了什么问题：**
-
-在没有 Class 的情况下实现「继承」。以 `a ===> Array.prototype ===> Object.prototype` 为例，我们说：
-
-1.  a 是 Array 的实例，a 拥有 Array.prototype 里的属性
-
-<!---->
-
-2.  Array 继承了 Object（注意专业术语的使用）
-
-<!---->
-
-3.  a 是 Object 的间接实例，a 拥有 Object.prototype 里的属性
-
-**优点：**
-
-简单、优雅。
-
-**缺点：**
-
-跟 class 相比，不支持私有属性。
-
-**怎么解决缺点：**
-
-使用 class 呗。但 class 是 ES6 引入的，不被旧 IE 浏览器支持。
+* 构造函数与原型：
+每个函数都有一个 prototype 属性，指向它的原型对象。
+通过 new 创建的实例的 [[Prototype]] 会指向构造函数的 prototype。
+* 继承：
+原型链是 JavaScript 实现继承的基础。例如，Person.prototype 继承了 Object.prototype 的方法（如 toString、hasOwnProperty）。
+链的尽头：
+* 原型链的顶端是 Object.prototype，它的 [[Prototype]] 是 null，表示查找终止。
+原型链是 JavaScript 中对象属性和方法查找的机制，基于对象的 [[Prototype]] 链接形成。它既是继承的基础，也是 JavaScript“万物皆对象”的体现。理解原型链有助于深入掌握 JavaScript 的面向对象编程。
 
 > 建议熟读这篇文章：
 
@@ -252,9 +260,73 @@ init(); // 输出：I am outer
 ```
 
 在这个例子中， `innerFunction` 就是一个闭包，它可以访问外部函数 `outerFunction` 中的 `outerVar` 变量，即使 `outerFunction` 已经执行完毕。闭包的特性使得内部函数仍然可以访问其词法作用域中的变量，从而形成了闭包。
+
+3. **闭包的内存泄漏**：
+闭包会保持对其外部作用域变量的引用。如果这些变量引用了大量数据（如DOM元素或大对象），且闭包未被销毁，内存无法释放，可能导致泄漏。
+```js
+function setupButton() {
+  const button = document.createElement("button");
+  button.textContent = "Click Me";
+  document.body.appendChild(button);
+
+  // 大对象，占用内存
+  let largeData = new Array(1000000).fill("some data");
+
+  // 添加事件监听器，形成闭包
+  button.addEventListener("click", function() {
+    console.log("Array length:", largeData.length);
+  });
+}
+
+setupButton();
+```
+* 避免方法：
+1.手动解除引用
+```js
+function bindEvent() {
+  const element = document.getElementById("myElement");
+  let data = new Array(1000000).fill("leak");
+  element.addEventListener("click", function handler() {
+    console.log(data.length);
+    element.removeEventListener("click", handler); // 移除监听
+    data = null; // 解除引用
+  });
+}
+```
+2.使用 `WeakMap` 或 `WeakSet`：它们可以自动释放内存，当对象不再被引用时，它们会自动被 JavaScript 引擎回收。
+
+* 示例：
+
+```js
+function setupButton() {
+  const button = document.createElement("button");
+  button.textContent = "Click Me";
+  document.body.appendChild(button);
+
+  let largeData = new Array(1000000).fill("some data");
+
+  // 定义事件处理函数
+  function handleClick() {
+    console.log("Array length:", largeData.length);
+  }
+
+  button.addEventListener("click", handleClick);
+
+  // 提供清理机制
+  button.addEventListener("dblclick", function cleanup() {
+    largeData = null; // 解除对 largeData 的引用
+    button.removeEventListener("click", handleClick); // 移除监听器
+    button.removeEventListener("dblclick", cleanup);  // 移除清理事件
+    console.log("Data and listener cleaned up");
+  });
+}
+
+setupButton();
+
+```
 :::
 
-## 深拷贝（Deep Copy）和浅拷贝（Shallow Copy）
+## :star: 深拷贝（Deep Copy）和浅拷贝（Shallow Copy）
 
 是在复制对象或数组时所采用的两种不同方法，它们对于复制嵌套对象或数组的方式不同。
 
@@ -262,7 +334,8 @@ init(); // 输出：I am outer
 
 ### 浅拷贝（Shallow Copy）：
 
-浅拷贝会创建一个新的对象或数组，并复制原始对象或数组的基本数据结构，但是对于嵌套的对象或数组，它们只会复制引用，而不是创建全新的对象或数组。
+> 只复制对象的第一层属性。如果属性是基本类型（如数字、字符串），直接复制值；如果属性是引用类型（如对象、数组），只复制引用地址，不复制引用的内容。
+结果：新对象和原对象共享嵌套的引用类型数据，修改嵌套数据会互相影响。
 
 * Object.assign({}, sourceObject)
 * 扩展运算符 { ...sourceObject }
@@ -270,61 +343,111 @@ init(); // 输出：I am outer
 * Array.concat()
 
 ```javascript
-// 浅拷贝示例
-const originalObject = {
-  a: 1,
-  b: {
-    c: 2
-  }
+const original = {
+  name: "Alice",
+  info: { age: 25, city: "Beijing" }
 };
-const shallowCopy = Object.assign({}, originalObject);
 
-// 修改原始对象中的嵌套对象
-originalObject.b.c = 3;
+// 使用对象扩展运算符进行浅拷贝
+const shallowCopy = { ...original };
 
-console.log(shallowCopy.b.c); // 输出: 3（因为嵌套对象是引用复制，所以修改了原始对象也会影响浅拷贝的对象）
+shallowCopy.name = "Bob";         // 修改基本类型
+shallowCopy.info.age = 30;        // 修改嵌套对象
+
+console.log(original);            // { name: "Alice", info: { age: 30, city: "Beijing" } }
+console.log(shallowCopy);         // { name: "Bob", info: { age: 30, city: "Beijing" } }
 ```
 
 ### 深拷贝（Deep Copy）：
 
-深拷贝会创建一个全新的对象或数组，不仅复制原始对象或数组的基本数据结构，还会递归复制所有的嵌套对象或数组，确保每个对象都是全新的。
+> 完全复制对象的所有层级，包括嵌套的引用类型。创建一个独立的新对象，与原对象没有任何引用关系。
+结果：新对象和原对象完全独立，修改一方不会影响另一方。
+
+* JSON 方法（简单但有限）
+  - JSON 方法不适用于函数、Date、RegExp 等，需特别处理 Map、Set 等 ES6 数据结构
+* 递归实现（通用方法）
 
 ```javascript
 // 深拷贝示例
-const originalObject = {
-  a: 1,
-  b: {
-    c: 2
-  }
+const original = {
+  name: "Alice",
+  info: { age: 25, city: "Beijing" }
 };
-const deepCopy = JSON.parse(JSON.stringify(originalObject));
 
-// 修改原始对象中的嵌套对象
-originalObject.b.c = 3;
+// 使用 JSON 方法进行深拷贝
+const deepCopy = JSON.parse(JSON.stringify(original));
 
-console.log(deepCopy.b.c); // 输出: 2（因为进行了深拷贝，所以修改原始对象不会影响深拷贝的对象）
+deepCopy.name = "Bob";            // 修改基本类型
+deepCopy.info.age = 30;           // 修改嵌套对象
+
+console.log(original);            // { name: "Alice", info: { age: 25, city: "Beijing" } }
+console.log(deepCopy);            // { name: "Bob", info: { age: 30, city: "Beijing" } }
 ```
 
 ### 总结：
 
-* 浅拷贝只复制基本数据结构和引用，而不会递归复制嵌套对象或数组。
-* 深拷贝会递归复制所有的对象和数组，确保每个对象都是全新的。然而，使用 `JSON.parse(JSON.stringify(object))` 进行深拷贝时，可能会忽略一些特殊类型的数据（如函数、正则表达式、循环引用等），因此需要谨慎使用。
+1、浅拷贝：复制一层，嵌套引用共享，适合简单场景。
+2、深拷贝：全复制，独立内存，适合复杂数据操作。
 
 :::
 
 ## :star: 谈谈 This 对象的理解。
 
 ::: details
-this 是执行上下文中的一个属性，它指向最后一次调用这个方法的对象。在实际开发中，this 的指向可以通过四种调用模
-式来判断。
-1. 第一种是函数调用模式，当一个函数不是一个对象的属性时，直接作为函数来调用时，this 指向全局对象。
+> this 是一个在函数执行时自动绑定的关键字，指向某个对象，表示函数的调用上下文（context），this 的值取决于函数的调用方式，而不是定义时的位置。
 
-2. 第二种是方法调用模式，如果一个函数作为一个对象的方法来调用时，this 指向这个对象。
 
-3. 第三种是构造器调用模式，如果一个函数用 new 调用时，函数执行前会新创建一个对象，this 指向这个新创建的对象。
+1. **显式绑定（Explicit Binding）**
+- 方式：通过 call、apply 或 bind 方法明确指定 this 的值
+- 特点：最高优先级，覆盖其他绑定规则。
+- 示例：
+```js
+function sayName() {
+  console.log(this.name);
+}
 
-4. 第四种是 apply 、 call 和 bind 调用模式，这三个方法都可以显示的指定调用函数的 this 指向。其中 apply 方法接收两个参数：一个是 this 绑定的对象，一个是参数数组。call 方法接收的参数，第一个是 this 绑定的对象，后面的其余参数是传入函数执行的参数。也就是说，在使用 call() 方法时，传递给函数的参数必须逐个列举出来。bind 方法通过传入一个对象，返回一个 this 绑定了传入对象的新函数。这个函数的 this 指向除了使用 new 时会被改变，其他情况下都不会改变。
+const obj = { name: "Alice" };
+sayName.call(obj); // 输出: "Alice"
+```
 
+2. **新建绑定（New Binding）**
+ - 方式：当使用 new 操作符调用函数时，函数中的 this 绑定到新创建的对象上。
+ - 特点：创建新对象，this 指向新对象。
+ - 示例：
+```js
+function Person(name) {
+  this.name = name;
+}
+
+const alice = new Person("Alice");
+console.log(alice.name); // 输出: "Alice"
+```
+3. **隐式绑定（Implicit Binding）**
+ - 方式：通过对象调用方法时，this 绑定到该对象。
+ - 特点：依赖调用时的上下文。
+ - 示例：
+```js
+const person = {
+  name: "Alice",
+  sayName: function() {
+    console.log(this.name);
+  }
+};
+
+person.sayName(); // 输出: "Alice"
+```
+4. **默认绑定（Default Binding）**
+ - 方式：直接调用函数，未明确指定上下文。
+ - 特点：最低优先级，this 绑定到全局对象（非严格模式）或 undefined（严格模式）。
+ - 示例：
+```js
+function sayName() {
+  console.log(this.name);
+}
+
+var name = "Global"; // 全局变量
+sayName(); // 输出: "Global"（非严格模式）, undefined（严格模式）
+```
 :::
 
 ## 说一说call apply bind的作用和区别？
@@ -376,31 +499,56 @@ this 是执行上下文中的一个属性，它指向最后一次调用这个方
 ## 说一说事件循环Event loop，宏任务与微任务？
 
 ::: details
-js是单线程的，主线程在执行时会不断循环往复的从同步队列中读取任务，执行任务，当同步队列执行完毕后再从异步队列中依次执行。
 
-宏任务与微任务都属于异步任务，再执行上微任务的优先级高于宏任务，因此每一次都会先执行完微任务在执行宏任务。
+事件循环是 JavaScript 引擎用来协调同步代码和异步任务执行的机制。它确保主线程在执行完当前任务后，持续从任务队列中取出任务并执行。
+1. 宏任务
+- 定义：较大的、独立的异步任务，通常涉及较重的操作或外部事件。
+- 宏任务有：setTimeout、setInterval、setImmediate、requestAnimationFrame、I/O、UI事件等。
+2. 微任务
+- 定义：较小的、相对独立的异步任务，通常涉及轻量级的操作。
+- 微任务有：Promise回调（.then、.catch、.finally）、MutationObserver、process.nextTick等。
+3. 事件循环的工作流程
 
-宏任务有定时器，Dom事件，ajax事件，
+* 执行同步代码：将同步代码压入调用栈，依次执行。
+* 遇到异步任务：
+* 宏任务：放入宏任务队列（如 setTimeout 的回调）。
+* 微任务：放入微任务队列（如 Promise.then 的回调）。
+* 调用栈清空：同步代码执行完毕，调用栈变空。
+* 处理微任务：事件循环检查微任务队列，执行所有微任务，直到队列为空。
+* 处理宏任务：从宏任务队列取出一个任务执行，完成后返回步骤 4。
+* 循环往复：不断重复上述步骤。
 
-微任务有：promise的回调、MutationObserver 的回调 , process.nextTick
+**总结：**
+1. 事件循环：协调同步和异步任务的执行。
+2. 宏任务：大块任务，延迟到下次循环，如 setTimeout。
+3. 微任务：高优先级任务，当前循环立即执行，如 Promise.then。
+4. 执行顺序：同步 → 微任务 → 宏任务，循环往复。
 :::
 
 ## 浏览器的垃圾回收机制
 
 ::: details
-浏览器的垃圾回收机制是为了管理内存的分配和释放，以确保不再被使用的内存能够被释放，避免内存泄漏和资源浪费。浏览器中的垃圾回收机制通常包括以下几个部分：
+浏览器的垃圾`不再被程序引用的对象或数据（不可达对象）`回收机制是为了管理内存的分配和释放，以确保不再被使用的内存能够被释放，避免内存泄漏和资源浪费。
+
+## 主要垃圾回收算法
 
 ### 1. 标记-清除算法（Mark and Sweep）：
 
-这是一种常见的垃圾回收算法，主要分为两个阶段：
 
-* **标记阶段：** 垃圾回收器会从根对象开始遍历所有对象，标记所有能够被直接或间接访问到的对象。根对象可以是全局对象、正在执行的函数的局部变量和闭包等。
-
-* **清除阶段：** 垃圾回收器会清除所有没有被标记的对象，释放它们所占用的内存。这些未被标记的对象被视为不再被使用，可以被安全地回收。
+* 标记阶段：从根对象开始，递归标记所有可达对象。
+* 清除阶段：扫描整个内存，清除未被标记的对象。
 
 ### 2. 引用计数（Reference Counting）：
 
-这种算法会对每个对象进行引用计数，当一个对象被引用时计数加一，当引用它的变量被销毁或者重新赋值时计数减一。当对象的引用计数为零时，就意味着该对象不再被引用，可以被回收。
+* 为每个对象维护一个引用计数器。
+* 当引用数变为 0 时，对象被立即回收。
+
+### 3. 分代回收（Generational Collection）
+* 将对象分为“新生代”（短生命周期）和“老生代”（长生命周期）。
+* 新生代使用快速回收（如 Scavenge 算法），老生代使用标记-清除。
+### 4. 增量回收（Incremental GC）
+* 将标记-清除分成多个小步骤，分散到 JavaScript 执行间隙中。
+
 
 ### JavaScript 中的垃圾回收机制：
 
