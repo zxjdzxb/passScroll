@@ -6,8 +6,15 @@ npx --no -- commitlint --edit ${1}
 
 . "$(dirname "$0")/_/husky.sh"
 
-# 读取提交消息文件并修改 footer
+
+# 获取提交消息文件路径
 MSG_FILE="$1"
+# 创建临时文件
 TEMP_FILE="$(mktemp)"
-sed 's/^\[\(.*\)$/\[\1]/' "$MSG_FILE" > "$TEMP_FILE"
+
+# 补全中文【】并移除多余空格
+sed '/^【.*[^】]$/ s/$/】/' "$MSG_FILE" | \
+sed 's/^【\s*\(.*\)\s*】$/【\1】/' > "$TEMP_FILE"
+
+# 将处理后的临时文件覆盖原始文件
 mv "$TEMP_FILE" "$MSG_FILE"
